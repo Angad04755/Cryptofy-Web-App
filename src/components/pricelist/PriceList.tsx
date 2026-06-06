@@ -7,6 +7,7 @@ import { SyncLoader } from "react-spinners";
 import SelectableButton from "../ui/SelectableButton";
 import { GetAllPrices } from "../../services/GetAllPrices";
 import { type Price } from "../../types/PriceType";
+import Footer from "../layout/Footer";
 
 const CURRENCY_OPTIONS = [
   { label: "USD", value: "usd" },
@@ -46,7 +47,7 @@ type LiveTicker = {
   changePercent: number;
 };
 
-const HoldingTable = () => {
+const PriceList = () => {
   const navigate = useNavigate();
 
   const wsRef = useRef<WebSocket | null>(null);
@@ -269,7 +270,7 @@ const HoldingTable = () => {
 
   if (loading || !exchangeInfo) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-700 via-green-800 to-green-900">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-700 to-green-900">
         <SyncLoader
           size={15}
           color="white"
@@ -282,8 +283,8 @@ const HoldingTable = () => {
     currency_symbols.get(currency);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-green-700 via-green-800 to-green-900 text-white">
-      <div className="sticky top-28.5 md:top-16.5 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-xl">
+    <section className="w-full min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white">
+      <div className="sticky top-13 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-xl">
         <SelectableButton
           options={CURRENCY_OPTIONS}
           selected={currency}
@@ -296,14 +297,14 @@ const HoldingTable = () => {
           wsFailed
             ? "text-red-200"
             : "text-green-200"
-        } z-10 sticky top-42 md:top-30 backdrop-blur-xl bg-black/20 px-4 py-2 text-center text-xs md:text-sm`}
+        } z-10 sticky top-26 backdrop-blur-xl bg-black/20 px-4 py-2 text-center text-xs md:text-sm`}
       >
         {wsFailed
           ? "connecting..."
           : "connected"}
       </div>
 
-      <div className="sticky top-50 md:top-39 z-10 border-b border-gray-700 bg-gray-900/70 backdrop-blur-xl">
+      <div className="sticky top-34 z-10 border-b border-gray-700 bg-gray-900/70 backdrop-blur-xl">
         <div className="grid grid-cols-[2fr_1fr_1fr] px-4 py-3 text-xs text-gray-300 md:grid-cols-[2fr_1fr_1fr_1fr] md:pl-40 md:text-lg lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
           <span className="pl-2 md:pl-65">
             Coin
@@ -458,8 +459,9 @@ const HoldingTable = () => {
           <ChevronRight size={16} />
         </button>
       </div>
+      <Footer/>
     </section>
   );
 };
 
-export default HoldingTable;
+export default PriceList;

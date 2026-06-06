@@ -1,25 +1,15 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 const SelectableButton = ({
   options,
   selected,
   onChange,
 }: any) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+    <div
       className="relative inline-block"
     >
-      <motion.select
+      <select
         value={selected}
         onChange={(e) => onChange(e.target.value)}
-        whileHover={{ scale: 1.03 }}
-        whileFocus={{ scale: 1.03 }}
-        transition={{ duration: 0.15 }}
         className="
         appearance-none
         rounded-lg
@@ -46,10 +36,10 @@ const SelectableButton = ({
             </option>
           );
         })}
-      </motion.select>
+      </select>
 
       {/* Animated Arrow */}
-      <motion.span
+      <span
         className="
         pointer-events-none
         absolute
@@ -59,12 +49,11 @@ const SelectableButton = ({
         text-gray-400
         text-xs
         "
-        whileHover={{ rotate: 180 }}
-        transition={{ duration: 0.3 }}
+
       >
         ▼
-      </motion.span>
-    </motion.div>
+      </span>
+    </div>
   );
 };
 

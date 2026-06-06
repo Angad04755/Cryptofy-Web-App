@@ -1,18 +1,18 @@
 "use client";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { CoinSearchItem } from "../search/types"
-import { searchPrices } from "@/src/apis/PricesApi";
+import { type CoinSearchType } from "../../types/CoinSearchType";
+import { searchPrices } from "../../services/SearchPrice";
 
 const SearchBox = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchparams = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchparams] = useSearchParams();
 
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<CoinSearchItem[]>([]);
+  const [suggestions, setSuggestions] = useState<CoinSearchType[]>([]);
   const [istyping, setIsTyping] = useState(false);
 
   // ✅ Debounce search
@@ -48,15 +48,15 @@ const SearchBox = () => {
   // Clear on route change
   useEffect(() => {
     setSuggestions([]);
-    if (pathname === "/") setQuery("");
-  }, [pathname]);
+    if (location.pathname === "/") setQuery("");
+  }, [location.pathname]);
 
   const goToSearch = (value: string) => {
     const trimmed = value.trim();
     if (!trimmed) return;
     setQuery(trimmed);
     setSuggestions([]);
-    router.push(`/search?query=${trimmed}`);
+    navigate(`/search?query=${trimmed}`);
   };
 
   const handleSubmit = (e: React.FormEvent) => {

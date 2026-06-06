@@ -19,7 +19,7 @@ const PriceDetails = () => {
   const [loading, setLoading] = useState(true);
   const [liveTicker, setLiveTicker] = useState<LiveTicker | null>(null);
 
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     const fetchPrice = async () => {

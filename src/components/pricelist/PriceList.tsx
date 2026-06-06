@@ -390,8 +390,8 @@ const PriceList = () => {
                       <div
                         className={`text-right font-medium ${
                           isPositive
-                            ? "text-green-400"
-                            : "text-red-400"
+                            ? "text-green-300"
+                            : "text-red-300"
                         }`}
                       >
                         {isPositive

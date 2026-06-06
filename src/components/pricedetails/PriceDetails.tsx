@@ -19,9 +19,12 @@ const PriceDetails = () => {
   const [loading, setLoading] = useState(true);
   const [liveTicker, setLiveTicker] = useState<LiveTicker | null>(null);
 
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
 
   useEffect(() => {
+    if (!id) {
+        return;
+    }
     const fetchPrice = async () => {
       try {
         setLoading(true);
@@ -40,6 +43,9 @@ const PriceDetails = () => {
   }, [id]);
 
   useEffect(() => {
+    if (!id) {
+        return;
+    }
     const fetchMarketChart = async () => {
       try {
         const res = await getCoinMarketChart(id);

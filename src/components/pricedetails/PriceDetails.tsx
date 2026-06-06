@@ -100,13 +100,6 @@ const PriceDetails = () => {
     );
   }
 
-  if (!coin) {
-    return (
-      <div className="min-h-screen bg-gray-300 flex items-center justify-center">
-        <SyncLoader size={25} color="black" />
-      </div>
-    );
-  }
 
   const currentPrice =
     liveTicker?.price ??

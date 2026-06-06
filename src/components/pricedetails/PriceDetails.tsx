@@ -99,7 +99,9 @@ const PriceDetails = () => {
       </div>
     );
   }
-
+ if (!coin) {
+  return;
+ }
 
   const currentPrice =
     liveTicker?.price ??

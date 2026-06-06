@@ -1,7 +1,6 @@
 import Logo from "../../assets/Logo.png"
 import { useLocation, useNavigate } from "react-router-dom";
-import SearchBox from "../search/SearchBox";
-import { Suspense } from "react";
+
 
 const Navbar = () => {
 

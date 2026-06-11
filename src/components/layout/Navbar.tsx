@@ -1,6 +1,6 @@
 import Logo from "../../assets/Logo.png"
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { SearchIcon } from "lucide-react";
 
 const Navbar = () => {
 
@@ -21,12 +21,12 @@ const Navbar = () => {
 
         {/* TOP ROW */}
 
-        <div className="grid grid-cols-2 md:grid-cols-3 items-center">
+        <div className="">
 
           {/* Logo */}
 
           <div
-            className="flex items-center cursor-pointer"
+            className="flex cursor-pointer"
             onClick={() => navigate("/")}
           >
 
@@ -48,8 +48,7 @@ const Navbar = () => {
           
         {/* SearchBox Mobile */}
 
-        
-
+        <span className={`text-black flex flex-row gap-1 mt-[-30px] float-right cursor-pointer transition px-2 py-1 ${location.pathname === "/search" ? "bg-white px-2 py-1 rounded-lg" : ""}`} onClick={() => navigate("/search")}><SearchIcon size={20} color="black"/> Search</span>
       </div>
     </div>
     </section>

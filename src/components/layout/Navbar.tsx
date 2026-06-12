@@ -30,7 +30,7 @@ const Navbar = () => {
             onClick={() => navigate("/")}
           >
 
-            <img src={Logo} width={35} height={35} alt="logo" />
+            <img src={Logo} width={30} height={30} alt="logo" />
 
             <span className="ml-[-8px] text-xl md:text-2xl font-bold text-black">
 
@@ -48,7 +48,7 @@ const Navbar = () => {
           
         {/* SearchBox Mobile */}
 
-        <span className={`text-black flex flex-row gap-1 mt-[-30px] float-right cursor-pointer transition px-2 py-1 ${location.pathname === "/search" ? "bg-white px-2 py-1 rounded-lg" : ""}`} onClick={() => navigate("/search")}><SearchIcon size={20} color="black"/> Search</span>
+        <span className={`text-black flex flex-row gap-1 mt-[-30px] float-right cursor-pointer transition px-2 py-1 ${location.pathname === "/search" ? "bg-white px-2 py-1 rounded-lg" : ""}`} onClick={() => navigate("/search")}><SearchIcon size={20} color="black" className={`${location.pathname === "/search" ? "fill-black" : ""}`}/> Search</span>
       </div>
     </div>
     </section>

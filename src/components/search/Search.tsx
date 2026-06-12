@@ -37,7 +37,7 @@ function Search() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-400 to-green-700">
-        <section className="sticky top-10 backdrop-blur-lg">
+        <section className="sticky top-13 pb-5 z-1000 bg-green-400">
     <SearchBox />
     </section>
 

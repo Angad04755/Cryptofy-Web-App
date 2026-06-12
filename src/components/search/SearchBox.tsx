@@ -24,7 +24,6 @@ function SearchBox() {
       return;
     }
       setQuery(urlquery);
-      setSuggestions([]);
   }, [searchparams])
 
   useEffect(() => {
@@ -55,6 +54,7 @@ function SearchBox() {
           {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-gray-400 cursor-pointer transition py-2 px-3" onClick={() => handleSuggestions(suggestion.id)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
         </div>
       )}
+
     
     </form>
   )

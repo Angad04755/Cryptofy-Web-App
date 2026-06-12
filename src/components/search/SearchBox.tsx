@@ -40,7 +40,7 @@ function SearchBox() {
       try {
         const res = await searchPrices(query);
         setSuggestions(res.coins.slice(0,5));
-      } catch (error) {
+      } catch (error: any) {
           toast.error(error.message)
       }
     }, 1000);

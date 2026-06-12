@@ -4,5 +4,8 @@ export async function searchPrices (query: string) {
                 method: "GET",
             }
         );
+        if (res.status !== 200) {
+            throw new Error("Couldn't load prices")
+        }
         return res.json();
 }

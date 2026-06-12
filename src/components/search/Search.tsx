@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { searchPrices } from "../../services/SearchPrice";
 import { type CoinSearchType } from "../../types/CoinSearchType";
-import { Suspense } from "react";
 function Search() {
   const [searchparams] = useSearchParams();
   const navigate = useNavigate();
@@ -39,9 +38,7 @@ function Search() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-400 to-green-700">
         <section className="sticky top-10 backdrop-blur-lg">
-    <Suspense>
     <SearchBox />
-    </Suspense>
     </section>
 
       <div className="px-10 md:px-45 pt-6">

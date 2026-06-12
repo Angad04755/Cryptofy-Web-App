@@ -47,6 +47,7 @@ function SearchBox() {
     return () => clearTimeout(timer)
   }, [query])
   return (
+    <section className="sticky top-13 pb-5 z-1000 bg-green-400">
     <form className="w-full px-10 md:px-45 pt-5" onSubmit={handleSearch}>
       <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-white text-gray-600 outline-none focus-within:ring-2 focus-within:ring-green-500 transition" value={query} onChange={(e) => setQuery(e.target.value)}/>
       {suggestions && (
@@ -57,6 +58,7 @@ function SearchBox() {
 
     
     </form>
+    </section>
   )
 }
 export default SearchBox;

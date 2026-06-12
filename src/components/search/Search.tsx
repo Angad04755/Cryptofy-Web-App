@@ -37,11 +37,10 @@ function Search() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-green-400 to-green-700">
-        <section className="sticky top-13 pb-5 z-1000 bg-green-400">
+        
     <SearchBox />
-    </section>
 
-      <div className="px-10 md:px-45 pt-6">
+      <section className="px-10 md:px-45 pt-6">
         {urlquery && (
           <h2 className="text-2xl font-bold text-white mb-6">
             Results for "{urlquery}"
@@ -79,7 +78,7 @@ function Search() {
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </main>
   );
 }

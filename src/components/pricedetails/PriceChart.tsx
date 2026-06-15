@@ -24,9 +24,9 @@ export default function PriceChart({ prices, livePrice }: PriceChartProps) {
   }));
 
   const chartPrices =
-    livePrice && formattedPrices.length > 0
+    livePrice && formattedPrices
       ? [
-          ...formattedPrices.slice(0, -1),
+          ...formattedPrices,
           {
             timeStamp: Date.now(),
             price: livePrice,
@@ -65,11 +65,11 @@ export default function PriceChart({ prices, livePrice }: PriceChartProps) {
       x: { display: false },
       y: { display: false },
     },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
+    // plugins: {
+    //   legend: {
+    //     display: false,
+    //   },
+    // },
   };
 
   return (

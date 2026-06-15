@@ -47,7 +47,7 @@ function LoginModal({ onclose }: LoginModalProps) {
             <input
               type="email"
               placeholder="Enter your email"
-              {...register("email")}
+              {...register("email", { setValueAs: (value) => String(value) })}
               className="w-full hover:border-1 hover:border-white border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black"
             />
 

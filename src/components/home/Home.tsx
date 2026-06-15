@@ -8,7 +8,7 @@ const Home = () => {
     <section
       className="w-full min-h-screen bg-gradient-to-b from-green-400 to-red-400 flex items-center justify-center"
       style={{
-        animation: "fadeup 0.6s ease-in-out",
+        animation: "Pulse 4s ease-in-out infinite",
       }}
     >
       <article className="text-center px-6">

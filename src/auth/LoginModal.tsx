@@ -48,11 +48,11 @@ function LoginModal({ onclose }: LoginModalProps) {
               type="email"
               placeholder="Enter your email"
               {...register("email", { setValueAs: (value) => String(value) })}
-              className="w-full hover:border-1 hover:border-white border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black"
+              className="w-full border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black"
             />
 
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500">
+              <p className="mt-1 text-sm text-red-300">
                 {errors.email.message}
               </p>
             )}
@@ -67,11 +67,11 @@ function LoginModal({ onclose }: LoginModalProps) {
               type="password"
               placeholder="Enter your password"
               {...register("password", { setValueAs: (value) => String(value) })}
-              className="w-full hover:border-1 hover:border-white border-1 border-gray-600 px-3 py-4 outline-none bg-black focus-within:ring-1 focus-within:ring-white"
+              className="w-full border-1 border-gray-600 px-3 py-4 outline-none bg-black focus-within:ring-1 focus-within:ring-white"
             />
 
             {errors.password && (
-              <p className="mt-1 text-sm text-red-500">
+              <p className="mt-1 text-sm text-red-300">
                 {errors.password.message}
               </p>
             )}

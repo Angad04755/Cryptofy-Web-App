@@ -6,7 +6,13 @@ import {
   loginSchema,
   type LoginFormData,
 } from "../schemas/LoginSchema";
-
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import RegisterModal from "./RegisterModal";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../redux/store";
+import { login } from "../redux/slices/AuthSlice";
 interface LoginModalProps {
     onclose: () => void,
 }
@@ -19,16 +25,22 @@ function LoginModal({ onclose }: LoginModalProps) {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
-  const onSubmit = async (data: LoginFormData) => {
-    console.log(data);
-
-    // Example API call
-    // await loginUser(data);
+  const navigate = useNavigate();
+  const [activetab, setActivetab] = useState<"login" | "register">("login");
+  const dispatch = useDispatch<AppDispatch>();
+  const onSubmit = () => {
+        toast.success("Logged in");
+        navigate("/prices")
+        localStorage.setItem("isAuthenticated", "Authenticated")
+        console.log(localStorage.getItem("isAuthenticated"));
+        dispatch(login(true))
   };
 
   return (
-    <Modal>
+    <div>
+    {activetab === 'login' && (
+    <Modal children={
+      <div>
         <span className="float-right"><X size={25} onClick={onclose}/></span>
         <h2 className="mb-6 text-2xl font-bold">
           Login
@@ -41,19 +53,19 @@ function LoginModal({ onclose }: LoginModalProps) {
         >
           <div>
             <label className="mb-1 block text-sm font-medium">
-              Email
+              Username
             </label>
 
             <input
-              type="email"
-              placeholder="Enter your email"
-              {...register("email", { setValueAs: (value) => String(value) })}
+              type="text"
+              placeholder="Enter username"
+              {...register("username", { setValueAs: (value) => String(value) })}
               className="w-full border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black"
             />
 
-            {errors.email && (
+            {errors.username && (
               <p className="mt-1 text-sm text-red-300">
-                {errors.email.message}
+                {errors.username.message}
               </p>
             )}
           </div>
@@ -80,12 +92,28 @@ function LoginModal({ onclose }: LoginModalProps) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-white py-4 text-black"
+            className="w-full bg-white py-4 text-black disabled:bg-white/70 hover:bg-white/80 transition cursor-pointer"
           >
-            {isSubmitting ? "Logging in..." : "Login"}
+            {isSubmitting ? "Loging..." : "Login"}
           </button>
         </form>
-    </Modal>
+        <p className="mt-4 text-center text-sm">
+  Don't have an account?{" "}
+  <button
+    type="button"
+    onClick={() => setActivetab("register")}
+    className="underline cursor-pointer"
+  >
+    Register
+  </button>
+</p>
+        </div>
+    }/>
+    )}
+    {activetab === "register" && (
+      <RegisterModal onClose={onclose}/>
+    )}
+    </div>
   );
 }
 

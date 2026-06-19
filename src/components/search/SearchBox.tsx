@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { type CoinSearchType } from "../../types/CoinSearchType";
 import { searchPrices } from "../../services/SearchPrice";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 function SearchBox() {
   const [suggestions, setSuggestions] = useState<CoinSearchType[]>([]);
   const [query, setQuery] = useState("");
@@ -47,8 +48,10 @@ function SearchBox() {
     return () => clearTimeout(timer)
   }, [query])
   return (
-    <section className="sticky top-14 pb-5 bg-green-300">
+    <section className="flex flex-row sticky top-14 pb-5 bg-green-300">
+    <button className="flex flex-row mt-[10px] ml-[30px] font-bold"><ArrowLeft color="black" className=""/></button>
     <form className="w-full px-10 md:px-45 pt-5" onSubmit={handleSearch}>
+      
       <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-white text-gray-600 outline-none focus-within:ring-2 focus-within:ring-green-500 transition" value={query} onChange={(e) => setQuery(e.target.value)}/>
       {suggestions && (
         <div className="bg-green-200 space-y-5">

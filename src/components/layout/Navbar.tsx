@@ -1,6 +1,6 @@
 import Logo from "../../assets/Logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SearchIcon, User } from "lucide-react";
+import { ChevronUp, SearchIcon, User } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/AuthSlice";
@@ -62,20 +62,35 @@ const Navbar = () => {
             </span>
 
             {/* User Dropdown */}
-              <button className="cursor-pointer rounded-full p-2 hover:bg-white/20 transition"  onClick={() => setShowDropdown((prev) => !prev)}>
-                <User size={24} color="black" />
-              </button>
+             <button
+        className={`${
+          showDropdown ? "bg-white" : "hover:bg-white/20"
+        } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
+        onClick={() => setShowDropdown((prev) => !prev)}
+      >
+        <User
+          size={24}
+          color="black"
+          className={showDropdown ? "fill-black" : ""}
+        />
 
-              {showDropdown && (
-  <div className="fixed top-13 right-3 rounded-xl bg-white shadow-xl border border-gray-200 p-2">
-    <button
-      onClick={handleLogout}
-      className="px-4 py-2 text-red-500 rounded-lg hover:bg-red-50 transition cursor-pointer"
-    >
-      Logout
-    </button>
-  </div>
-)}
+        <ChevronUp
+          size={24}
+          color="black"
+          className={`transition ${showDropdown ? "rotate-180" : "rotate-0"}`}
+        />
+      </button>
+
+      {showDropdown && (
+        <div className="fixed top-11 right-2 mt-2 rounded-xl bg-white shadow-xl border border-gray-200 p-2 z-50">
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-red-500 rounded-lg hover:bg-red-50 transition cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
+      )}
             </div>
           </div>
         </div>

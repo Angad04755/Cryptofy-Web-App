@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     setShowDropdown(false);
-    localStorage.removeItem("isAuthenticated");
+    localStorage.clear();
     dispatch(login(false));
     navigate("/");
   };

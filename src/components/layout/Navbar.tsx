@@ -62,48 +62,38 @@ const Navbar = () => {
             </span>
 
             {/* User Dropdown */}
-            <div
-              className=""
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-            >
-              <button
-                className={`${
-                  showDropdown ? "bg-white" : "hover:bg-white/20"
-                } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2 transition`}
-                onClick={() => setShowDropdown((prev) => !prev)}
-              >
-                <User
-                  size={24}
-                  color="black"
-                  className={showDropdown ? "fill-black" : ""}
-                />
+             <button
+        className={`${
+          showDropdown ? "bg-white" : "hover:bg-white/20"
+        } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
+        onClick={() => setShowDropdown((prev) => !prev)}
+      >
+        <User
+          size={24}
+          color="black"
+          className={showDropdown ? "fill-black" : ""}
+        />
 
-                <ChevronUp
-                  size={24}
-                  color="black"
-                  className={`transition ${
-                    showDropdown ? "rotate-180" : "rotate-0"
-                  }`}
-                />
-              </button>
+        <ChevronUp
+          size={24}
+          color="black"
+          className={`transition ${showDropdown ? "rotate-180" : "rotate-0"}`}
+        />
+      </button>
 
-              {showDropdown && (
-                <div className="fixed right-0 bg-white shadow-xl border border-gray-200 p-2 z-50"
-                  
-                >
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-red-500 rounded-lg hover:bg-red-50 transition cursor-pointer"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
+      {showDropdown && (
+        <div className="fixed top-11 right-2 mt-2 rounded-xl bg-white shadow-xl border border-gray-200 p-2 z-50">
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-red-500 rounded-lg hover:bg-red-50 transition cursor-pointer"
+          >
+            Logout
+          </button>
+        </div>
+      )}
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 };

@@ -304,7 +304,7 @@ const PriceList = () => {
           : "connected"}
       </div>
 
-      <div className="sticky top-36 z-10 border-b border-gray-700 bg-gray-900/70 backdrop-blur-lg">
+      <div className="sticky top-35 z-10 border-b border-gray-700 bg-gray-900/70 backdrop-blur-lg">
         <div className="grid grid-cols-[2fr_1fr_1fr] px-4 py-3 text-xs text-gray-300 md:grid-cols-[2fr_1fr_1fr_1fr] md:pl-40 md:text-lg lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
           <span className="pl-2 md:pl-65">
             Coin

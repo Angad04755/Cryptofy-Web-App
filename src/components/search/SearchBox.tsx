@@ -49,7 +49,7 @@ function SearchBox() {
   }, [query])
   return (
     <section className="flex flex-row sticky top-14 pb-5 bg-green-300 px-5">
-    <ArrowLeft size={28} color="black"/>
+    <button onClick={() => navigate(-1)} className="cursor-pointer"><ArrowLeft size={28} color="black"/></button>
     <form className="w-full px-10 md:px-45 pt-5" onSubmit={handleSearch}>
       
       <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-white text-gray-600 outline-none focus-within:ring-2 focus-within:ring-green-500 transition" value={query} onChange={(e) => setQuery(e.target.value)}/>

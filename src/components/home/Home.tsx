@@ -42,7 +42,7 @@ const Home = () => {
             ) : (
               <button
                 onClick={() => navigate("/prices")}
-                className="bg-green-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-600 transition cursor-pointer"
+                className="bg-green-400 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-500 transition cursor-pointer"
               >
                 View Prices
               </button>

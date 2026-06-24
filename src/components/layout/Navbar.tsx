@@ -1,6 +1,6 @@
 import Logo from "../../assets/Logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ChevronUp, SearchIcon, User } from "lucide-react";
+import { Bitcoin, ChevronUp, SearchIcon, User } from "lucide-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/slices/AuthSlice";
@@ -40,7 +40,8 @@ const Navbar = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex place-content-center gap-4">
+            <span className={`py-1 px-2 cursor-pointer ${location.pathname === "/prices" ? "bg-green-400 rounded-full" : ""}`} onClick={() => navigate("/prices")}><Bitcoin className={`py-1 ${location.pathname === "/prices" ? "fill-black" : ""}`} size={35} color="black"/></span>
             {/* Search */}
             <span
               className={`text-black flex items-center gap-1 cursor-pointer transition px-2 py-1 rounded-lg ${
@@ -64,7 +65,7 @@ const Navbar = () => {
             {/* User Dropdown */}
              <button
         className={`${
-          showDropdown ? "bg-yellow-100" : ""
+          showDropdown ? "bg-yellow-400" : ""
         } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >

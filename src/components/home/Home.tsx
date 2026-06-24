@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
       {/* Left Section */}
-      <section className="w-full md:w-1/2 flex items-center justify-center px-8 py-12 bg-white">
+      <section className="w-full min-h-screen md:w-[50vw] flex items-center justify-center px-8 py-12 bg-white">
         <div className="">
 
           <h1 className="text-5xl md:text-6xl font-bold mt-4 leading-tight">
@@ -52,12 +52,11 @@ const Home = () => {
       </section>
 
       {/* Right Section */}
-      <section className="w-full md:w-1/2 h-[40vh] md:h-screen overflow-hidden">
+      <section className="hidden md:block md:w-[50vw] overflow-hidden">
         <video
           autoPlay
           loop
           muted
-          playsInline
           className="w-full h-full object-cover"
         >
           <source src={video} type="video/mp4" />

@@ -36,7 +36,7 @@ function Search() {
   }, [urlquery]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-green-400 to-green-700">
+    <main className="min-h-screen bg-black">
         
     <SearchBox />
 

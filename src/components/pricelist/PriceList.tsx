@@ -270,7 +270,7 @@ const PriceList = () => {
 
   if (loading || !exchangeInfo) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-700 to-green-900">
+      <div className="flex min-h-screen items-center justify-center bg-black">
         <SyncLoader
           size={15}
           color="white"
@@ -283,7 +283,7 @@ const PriceList = () => {
     currency_symbols.get(currency);
 
   return (
-    <section className="w-full min-h-screen bg-gradient-to-b from-green-700 to-green-900 text-white">
+    <section className="w-full min-h-screen bg-black text-white">
       <div className="sticky top-14 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-lg">
         <SelectableButton
           options={CURRENCY_OPTIONS}

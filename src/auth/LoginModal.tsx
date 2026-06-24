@@ -92,7 +92,7 @@ function LoginModal({ onclose }: LoginModalProps) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-white py-4 text-black disabled:bg-white/70 hover:bg-white/80 transition cursor-pointer"
+            className="w-full bg-white py-4 text-black disabled:bg-gray-800 hover:bg-gray-800 transition cursor-pointer"
           >
             {isSubmitting ? "Loging..." : "Login"}
           </button>

@@ -108,7 +108,7 @@ function RegisterModal({ onClose }: RegisterModalProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-white py-4 text-black hover:bg-white/80 cursor-pointer transition"
+              className="disabled:bg-gray-800 w-full bg-white py-4 text-black hover:bg-gray-800 cursor-pointer transition"
             >
               {isSubmitting ? "Creating..." : "Create Account"}
             </button>

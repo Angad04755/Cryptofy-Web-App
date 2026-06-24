@@ -23,7 +23,7 @@ const Navbar = () => {
     <section
       className={`${
         location.pathname === "/" ? "hidden" : "block"
-      } sticky top-0 z-50 w-full border-b border-white/20 bg-gradient-to-r from-emerald-500 to-teal-400 backdrop-blur-md shadow-sm`}
+      } sticky top-0 z-50 w-full border-b border-white/20 bg-white backdrop-blur-md shadow-sm`}
     >
       <div className="mx-auto px-4 md:px-6 py-2">
         <div className="flex items-center justify-between">
@@ -45,8 +45,8 @@ const Navbar = () => {
             <span
               className={`text-black flex items-center gap-1 cursor-pointer transition px-2 py-1 rounded-lg ${
                 location.pathname === "/search"
-                  ? "bg-white"
-                  : "hover:bg-white/20"
+                  ? "bg-black text-white"
+                  : ""
               }`}
               onClick={() => navigate("/search")}
             >
@@ -54,7 +54,7 @@ const Navbar = () => {
                 size={20}
                 className={
                   location.pathname === "/search"
-                    ? "fill-black"
+                    ? "fill-white"
                     : ""
                 }
               />
@@ -64,14 +64,14 @@ const Navbar = () => {
             {/* User Dropdown */}
              <button
         className={`${
-          showDropdown ? "bg-white" : "hover:bg-white/20"
+          showDropdown ? "bg-yellow-100" : ""
         } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >
         <User
           size={24}
           color="black"
-          className={showDropdown ? "fill-black" : ""}
+          className={showDropdown ? "fill-white" : ""}
         />
 
         <ChevronUp

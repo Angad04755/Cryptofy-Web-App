@@ -94,8 +94,8 @@ const PriceDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-300 flex items-center justify-center">
-        <SyncLoader size={25} color="black" />
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <SyncLoader size={25} color="white" />
       </div>
     );
   }
@@ -114,7 +114,7 @@ const PriceDetails = () => {
   const isPositive = priceChange >= 0;
 
   return (
-    <section className="min-h-screen bg-gray-300 text-black px-4 md:px-6 py-10">
+    <section className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
       <div className="max-w-5xl mx-auto space-y-10">
         {/* Coin Header */}
         <div className="flex items-center gap-5 flex-wrap">

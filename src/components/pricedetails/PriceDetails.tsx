@@ -172,7 +172,7 @@ const PriceDetails = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 bg-black rounded-xl p-6">
+        <div className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] gap-6 bg-black rounded-xl p-6">
           <Stat
             label="Market Cap"
             value={`$${coin.market_data.market_cap.usd.toLocaleString()}`}
@@ -229,7 +229,7 @@ const PriceDetails = () => {
         )}
 
         {/* Links */}
-        <div className="flex flex-wrap gap-6 text-sm">
+        <div className="flex flex-row px-6 gap-6 text-sm">
           {coin.links.homepage[0] && (
             <ExternalLink
               href={coin.links.homepage[0]}

@@ -62,8 +62,7 @@ function Search() {
   }
   return (
     <main className="min-h-screen bg-black">
-      <SearchBox />
-
+      <SearchBox /> 
       <section className="px-10 md:px-45 pt-6">
         {urlQuery && (
           <h2 className="text-2xl font-bold text-white mb-6">
@@ -76,13 +75,13 @@ function Search() {
         {coins.length > 0 && (
           <>
             {/* Top Result */}
-            <h3 className="text-lg font-semibold text-white mb-3">
+            <h3 className="text-lg font-semibold mb-3 text-gray-300">
               Top Result
             </h3>
 
             <div
               onClick={() => navigate(`/coin/${coins[0].id}`)}
-              className="flex items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-green-800 transition mb-8"
+              className="flex text-gray-500 items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-green-800 hover:text-white transition mb-8"
             >
               <img
                 src={coins[0].large}
@@ -96,16 +95,16 @@ function Search() {
                   {coins[0].name}
                 </h3>
 
-                <p className="text-sm text-gray-500 uppercase">
+                <p className="uppercase">
                   {coins[0].symbol}
                 </p>
               </div>
             </div>
 
-            {/* Other Results */}
+            <div>
             {coins.slice(1).length > 0 && (
-              <>
-                <h3 className="text-lg font-semibold text-white mb-3">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-300 mb-3">
                   Other Results
                 </h3>
 
@@ -114,7 +113,7 @@ function Search() {
                     <div
                       key={coin.id}
                       onClick={() => navigate(`/coin/${coin.id}`)}
-                      className="flex items-center gap-4 bg-white p-3 rounded-lg cursor-pointer hover:bg-green-800 transition"
+                      className="flex items-center gap-4 bg-white text-gray-500 p-3 rounded-lg cursor-pointer hover:bg-green-800 hover:text-white transition"
                     >
                       <img
                         src={coin.large}
@@ -128,17 +127,20 @@ function Search() {
                           {coin.name}
                         </h3>
 
-                        <p className="text-sm text-gray-500 uppercase">
+                        <p className="uppercase">
                           {coin.symbol}
                         </p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </>
+              </div>
             )}
+            </div>
           </>
+          
         )}
+        
         </div>
       </section>
     </main>

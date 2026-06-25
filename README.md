@@ -18,5 +18,5 @@ A modern cryptocurrency tracking web application that allows users to search, ex
 - React.js
 - TypeScript
 - Tailwind CSS
-- Rest APIs
-- Websockets
+- REST APIs
+- WebSockets

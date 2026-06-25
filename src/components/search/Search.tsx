@@ -82,7 +82,7 @@ function Search() {
 
             <div
               onClick={() => navigate(`/coin/${coins[0].id}`)}
-              className="flex items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition mb-8"
+              className="flex items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-green-800 transition mb-8"
             >
               <img
                 src={coins[0].large}
@@ -114,7 +114,7 @@ function Search() {
                     <div
                       key={coin.id}
                       onClick={() => navigate(`/coin/${coin.id}`)}
-                      className="flex items-center gap-4 bg-white p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition"
+                      className="flex items-center gap-4 bg-white p-3 rounded-lg cursor-pointer hover:bg-green-800 transition"
                     >
                       <img
                         src={coin.large}

@@ -49,6 +49,17 @@ function Search() {
       </main>
     )
   }
+
+  if (urlQuery && coins.length === 0) {
+    return (
+      <main className="min-h-screen bg-black">
+        <SearchBox/>
+        <div className="flex flex-row place-content-center">
+      <span className="text-white">No coins Found</span>
+      </div>
+      </main>
+    )
+  }
   return (
     <main className="min-h-screen bg-black">
       <SearchBox />

@@ -20,3 +20,4 @@ A modern cryptocurrency tracking web application that allows users to search, ex
 - Tailwind CSS
 - REST APIs
 - WebSockets
+- Redux Toolkit

@@ -41,7 +41,7 @@ const Navbar = () => {
 
           {/* Right Section */}
           <div className="flex place-content-center gap-4">
-            <span className={`py-1 px-2 cursor-pointer ${location.pathname === "/prices" ? "bg-green-400 rounded-full" : ""}`} onClick={() => navigate("/prices")}><Bitcoin className={`py-1 ${location.pathname === "/prices" ? "fill-black" : ""}`} size={35} color="black"/></span>
+            <span className={`py-1 px-2 cursor-pointer ${location.pathname === "/prices" ? "bg-green-200 rounded-full" : ""}`} onClick={() => navigate("/prices")}><Bitcoin className={`py-1 ${location.pathname === "/prices" ? "fill-black" : ""}`} size={35} color="black"/></span>
             {/* Search */}
             <span
               className={`text-black flex items-center gap-1 cursor-pointer transition px-2 py-1 rounded-lg ${
@@ -65,7 +65,7 @@ const Navbar = () => {
             {/* User Dropdown */}
              <button
         className={`${
-          showDropdown ? "bg-yellow-400" : ""
+          showDropdown ? "bg-yellow-200" : ""
         } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >

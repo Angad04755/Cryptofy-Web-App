@@ -263,7 +263,7 @@ const PriceList = () => {
                     {/* 24h % */}
                     <td
                       className={`py-3 pr-2 text-right font-medium tabular-nums sm:pr-4 ${
-                        isPositive ? "text-green-400" : "text-red-400"
+                        isPositive ? "text-green-200" : "text-red-200"
                       }`}
                     >
                       <span className="text-sm sm:text-base">

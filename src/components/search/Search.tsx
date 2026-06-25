@@ -36,9 +36,19 @@ function Search() {
     fetchCoins();
   }, [urlQuery]);
 
-  const topResult = coins[0];
-  const otherResults = coins.slice(1);
-
+  if (!coins) {
+    return;
+  }
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-black">
+        <SearchBox/>
+        <div className="flex flex-row place-content-center">
+      <span className="text-white">Searching coin..</span>
+      </div>
+      </main>
+    )
+  }
   return (
     <main className="min-h-screen bg-black">
       <SearchBox />
@@ -50,15 +60,9 @@ function Search() {
           </h2>
         )}
 
-        {loading && (
-          <p className="text-white">Loading...</p>
-        )}
+        <div>
 
-        {!loading && coins.length === 0 && urlQuery && (
-          <p className="text-white">No coins found.</p>
-        )}
-
-        {!loading && coins.length > 0 && (
+        {coins.length > 0 && (
           <>
             {/* Top Result */}
             <h3 className="text-lg font-semibold text-white mb-3">
@@ -66,36 +70,36 @@ function Search() {
             </h3>
 
             <div
-              onClick={() => navigate(`/coin/${topResult.id}`)}
+              onClick={() => navigate(`/coin/${coins[0].id}`)}
               className="flex items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-gray-100 transition mb-8"
             >
               <img
-                src={topResult.large}
-                alt={topResult.name}
+                src={coins[0].large}
+                alt={coins[0].name}
                 width={50}
                 height={50}
               />
 
               <div>
                 <h3 className="font-semibold text-lg">
-                  {topResult.name}
+                  {coins[0].name}
                 </h3>
 
                 <p className="text-sm text-gray-500 uppercase">
-                  {topResult.symbol}
+                  {coins[0].symbol}
                 </p>
               </div>
             </div>
 
             {/* Other Results */}
-            {otherResults.length > 0 && (
+            {coins.slice(1).length > 0 && (
               <>
                 <h3 className="text-lg font-semibold text-white mb-3">
                   Other Results
                 </h3>
 
                 <div className="space-y-3">
-                  {otherResults.map((coin) => (
+                  {coins.slice(1).map((coin) => (
                     <div
                       key={coin.id}
                       onClick={() => navigate(`/coin/${coin.id}`)}
@@ -124,6 +128,7 @@ function Search() {
             )}
           </>
         )}
+        </div>
       </section>
     </main>
   );

@@ -48,7 +48,7 @@ export default function PriceChart({ prices, livePrice }: PriceChartProps) {
     datasets: [
       {
         data: chartPrices.map((item) => item.price),
-        borderColor: isUp ? "#22c55e" : "#ef4444",
+        borderColor: isUp ? "#8ae8adff" : "#ea8888ff",
         tension: 0.4,
         pointRadius: 0,
       },

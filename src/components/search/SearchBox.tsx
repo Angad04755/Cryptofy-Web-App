@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { type CoinSearchType } from "../../types/CoinSearchType";
 import { searchPrices } from "../../services/SearchPrice";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 function SearchBox() {
   const [suggestions, setSuggestions] = useState<CoinSearchType[]>([]);
   const [query, setQuery] = useState("");
   const [searchparams] = useSearchParams();
   const navigate = useNavigate();
   const urlquery = searchparams.get("query");
-  const handleSuggestions = (query: string) => {
+  const handleSuggestions = (query: string, e: any) => {
+    e.preventDefault();
+    navigate(`/search?query=${query}`);
     setSuggestions([]);
-    navigate(`/search?query=${query}`)
   }
   
   useEffect(() => {
@@ -44,18 +45,21 @@ function SearchBox() {
     return () => clearTimeout(timer)
   }, [query])
   return (
-    <section className="sticky top-14 pb-5 bg-black px-5">
-    <button onClick={() => navigate(-1)} className="cursor-pointer mt-[10px]"><ArrowLeft size={28} color="white"/></button>
-    <div className="w-full px-10 md:px-45 pt-5">  
-      <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-black text-white outline-none focus-within:ring-2 focus-within:ring-green-400 border-1 border-gray-800 transition" value={query} onChange={(e) => setQuery(e.target.value)}/>
-    </div>
-    <div className="px-10 md:px-45 pt-5">
-      {suggestions && (
+    <section className="sticky top-15 pb-5 bg-black">
+    <button onClick={() => navigate(-1)} className="cursor-pointer pt-5 pl-5"><ArrowLeft size={28} color="white"/></button>
+    <article className="px-10 md:px-45 pt-5">
+    <form className="flex flex-row place-content-center w-full focus-within:ring-2 focus-within:ring-green-200 border-1 border-green-200 transition rounded-full" onSubmit={(e) => handleSuggestions(query, e)}>  
+      <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-black text-white outline-none rounded-full" value={query} onChange={(e) => setQuery(e.target.value)}/>
+      <span className="pt-2 pr-2">{query && (<span className="cursor-pointer" onClick={() => setQuery("")}><X color="white"/></span>)}</span>
+    </form>
+    <div className="pt-5">
+      {suggestions.length > 0 && (
         <div className="bg-black text-white space-y-5">
-          {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-gray-900 cursor-pointer transition py-2 px-3" onClick={() => handleSuggestions(suggestion.name)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
+          {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-green-800 cursor-pointer transition py-2 px-3" onClick={(e) => handleSuggestions(suggestion.name, e)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
         </div>
       )}
     </div>
+    </article>
     </section>
   )
 }

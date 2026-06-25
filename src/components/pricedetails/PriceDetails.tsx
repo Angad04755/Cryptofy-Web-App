@@ -150,8 +150,8 @@ const PriceDetails = () => {
             <p
               className={`text-sm font-semibold ${
                 isPositive
-                  ? "text-green-400"
-                  : "text-red-400"
+                  ? "text-green-200"
+                  : "text-red-200"
               }`}
             >
               {priceChange.toFixed(2)}% (24h)

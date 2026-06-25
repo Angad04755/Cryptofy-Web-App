@@ -43,7 +43,7 @@ function Search() {
     return (
       <main className="min-h-screen bg-black">
         <SearchBox/>
-        <div className="flex flex-row place-content-center">
+        <div className="flex place-content-center">
       <span className="text-white">Searching coin..</span>
       </div>
       </main>
@@ -54,7 +54,7 @@ function Search() {
     return (
       <main className="min-h-screen bg-black">
         <SearchBox/>
-        <div className="flex flex-row place-content-center">
+        <div className="flex place-content-center">
       <span className="text-white">No coins Found</span>
       </div>
       </main>

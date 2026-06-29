@@ -35,7 +35,7 @@ const Home = () => {
             {!authenticated ? (
               <button
                 onClick={() => setOpenmodal(true)}
-                className="bg-black text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-800 transition cursor-pointer"
+                className="bg-cyan-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-cyan-700 active:bg-cyan-800 transition cursor-pointer"
               >
                 Login
               </button>

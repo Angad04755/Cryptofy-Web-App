@@ -61,7 +61,7 @@ function RegisterModal({ onClose }: RegisterModalProps) {
               />
 
               {errors.username && (
-                <p className="mt-1 text-sm text-red-300">
+                <p className="mt-1 text-sm text-red-200">
                   {errors.username.message}
                 </p>
               )}
@@ -80,7 +80,7 @@ function RegisterModal({ onClose }: RegisterModalProps) {
               />
 
               {errors.email && (
-                <p className="mt-1 text-sm text-red-300">
+                <p className="mt-1 text-sm text-red-200">
                   {errors.email.message}
                 </p>
               )}
@@ -99,7 +99,7 @@ function RegisterModal({ onClose }: RegisterModalProps) {
               />
 
               {errors.password && (
-                <p className="mt-1 text-sm text-red-300">
+                <p className="mt-1 text-sm text-red-200">
                   {errors.password.message}
                 </p>
               )}
@@ -108,7 +108,7 @@ function RegisterModal({ onClose }: RegisterModalProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="disabled:bg-gray-800 w-full bg-white py-4 text-black hover:bg-gray-800 active:bg-gray-900 cursor-pointer transition"
+              className="disabled:bg-gray-200 w-full bg-white py-4 text-black hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
             >
               {isSubmitting ? "Creating..." : "Create Account"}
             </button>

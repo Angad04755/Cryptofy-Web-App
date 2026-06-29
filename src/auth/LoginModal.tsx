@@ -60,11 +60,11 @@ function LoginModal({ onclose }: LoginModalProps) {
               type="text"
               placeholder="Enter username"
               {...register("username", { setValueAs: (value) => String(value) })}
-              className="w-full border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black"
+              className="w-full border border-1 border-gray-600 focus-within:ring-1 focus-within:ring-white px-3 py-4 outline-none bg-black transition"
             />
 
             {errors.username && (
-              <p className="mt-1 text-sm text-red-300">
+              <p className="mt-1 text-sm text-red-200">
                 {errors.username.message}
               </p>
             )}
@@ -79,11 +79,11 @@ function LoginModal({ onclose }: LoginModalProps) {
               type="password"
               placeholder="Enter your password"
               {...register("password", { setValueAs: (value) => String(value) })}
-              className="w-full border-1 border-gray-600 px-3 py-4 outline-none bg-black focus-within:ring-1 focus-within:ring-white"
+              className="w-full border-1 border-gray-600 px-3 py-4 outline-none bg-black focus-within:ring-1 focus-within:ring-white transition"
             />
 
             {errors.password && (
-              <p className="mt-1 text-sm text-red-300">
+              <p className="mt-1 text-sm text-red-200">
                 {errors.password.message}
               </p>
             )}
@@ -92,7 +92,7 @@ function LoginModal({ onclose }: LoginModalProps) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-white py-4 text-black disabled:bg-gray-800 hover:bg-gray-800 active:bg-gray-900  transition cursor-pointer"
+            className="w-full bg-white py-4 text-black disabled:bg-gray-200 hover:bg-gray-200 active:bg-gray-300  transition cursor-pointer"
           >
             {isSubmitting ? "Loging..." : "Login"}
           </button>

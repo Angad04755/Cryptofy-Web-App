@@ -94,7 +94,7 @@ const PriceDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-cyan-900 flex items-center justify-center">
         <SyncLoader size={25} color="white" />
       </div>
     );
@@ -114,7 +114,7 @@ const PriceDetails = () => {
   const isPositive = priceChange >= 0;
 
   return (
-    <section className="min-h-screen bg-black text-white px-4 md:px-6 py-10">
+    <section className="min-h-screen bg-cyan-900 text-white px-4 md:px-6 py-10">
       <div className="max-w-5xl mx-auto space-y-10">
         {/* Coin Header */}
         <div className="flex items-center gap-5 flex-wrap">
@@ -142,7 +142,7 @@ const PriceDetails = () => {
 
         {/* Price */}
         <div className="flex items-end justify-between flex-wrap gap-6">
-          <div className="bg-black rounded-xl px-4 py-3 w-fit">
+          <div className="rounded-xl px-4 py-3 w-fit">
             <p className="text-2xl md:text-4xl font-semibold text-white">
               ${currentPrice.toLocaleString()}
             </p>
@@ -160,7 +160,7 @@ const PriceDetails = () => {
         </div>
 
         {/* Chart */}
-        <div className="bg-black rounded-xl p-5">
+        <div className="rounded-xl p-5">
           <p className="text-gray-400 text-sm mb-3">
             Last 7 Days
           </p>
@@ -172,7 +172,7 @@ const PriceDetails = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] gap-6 bg-black rounded-xl p-6">
+        <div className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] gap-6  text-gray-700 shadow-lg rounded-xl p-6">
           <Stat
             label="Market Cap"
             value={`$${coin.market_data.market_cap.usd.toLocaleString()}`}
@@ -213,8 +213,7 @@ const PriceDetails = () => {
         </div>
 
         {/* Description */}
-        {coin.description.en && (
-          <div className="bg-black rounded-xl p-6 shadow-lg">
+          <div className="text-cyan-900 rounded-xl p-6 shadow-lg">
             <h2 className="text-lg font-semibold text-white mb-2">
               About {coin.name}
             </h2>
@@ -226,30 +225,23 @@ const PriceDetails = () => {
               ...
             </p>
           </div>
-        )}
 
         {/* Links */}
         <div className="flex flex-row px-6 gap-6 text-sm">
-          {coin.links.homepage[0] && (
             <ExternalLink
               href={coin.links.homepage[0]}
               label="Website"
             />
-          )}
 
-          {coin.links.blockchain_site[0] && (
-            <ExternalLink
+                      <ExternalLink
               href={coin.links.blockchain_site[0]}
               label="Explorer"
             />
-          )}
 
-          {coin.links.repos_url.github[0] && (
             <ExternalLink
               href={coin.links.repos_url.github[0]}
               label="GitHub"
             />
-          )}
         </div>
       </div>
     </section>

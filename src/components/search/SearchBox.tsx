@@ -44,18 +44,21 @@ function SearchBox() {
     }, 500);
     return () => clearTimeout(timer)
   }, [query])
+
+  
+    
   return (
-    <section className="sticky top-15 pb-5 bg-black">
+    <section className="sticky top-15 pb-5 bg-cyan-900">
     <button onClick={() => navigate(-1)} className="cursor-pointer pt-5 pl-5"><ArrowLeft size={28} color="white"/></button>
     <article className="px-10 md:px-45 pt-5">
-    <form className="flex flex-row place-content-center w-full focus-within:ring-2 focus-within:ring-green-200 border-1 border-green-200 transition rounded-full" onSubmit={(e) => handleSuggestions(query, e)}>  
-      <input type="text" placeholder="search coins..." className="px-3 py-2 w-full bg-black text-white outline-none rounded-full" value={query} onChange={(e) => setQuery(e.target.value)}/>
+    <form className="flex flex-row place-content-center w-full border-2 border-cyan-200 transition rounded-full shadow-lg" onSubmit={(e) => handleSuggestions(query, e)}>  
+      <input type="text" placeholder="search coins..." className="px-3 py-2 w-full text-white outline-none rounded-full" value={query} onChange={(e) => setQuery(e.target.value)}/>
       <span className="pt-2 pr-2">{query && (<span className="cursor-pointer" onClick={() => setQuery("")}><X color="white"/></span>)}</span>
     </form>
-    <div className="pt-5">
+    <div className="pt-2">
       {suggestions.length > 0 && (
-        <div className="bg-black text-white space-y-5">
-          {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-green-800 cursor-pointer transition py-2 px-3" onClick={(e) => handleSuggestions(suggestion.name, e)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
+        <div className="bg-cyan-900 shadow-lg rounded-lg text-white space-y-5">
+          {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-cyan-700 active:bg-cyan-800 cursor-pointer transition py-2 px-3 rounded-lg" onClick={(e) => handleSuggestions(suggestion.name, e)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
         </div>
       )}
     </div>

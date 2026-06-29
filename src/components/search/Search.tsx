@@ -37,11 +37,16 @@ function Search() {
   }, [urlQuery]);
 
   if (!coins) {
-    return;
+    return (
+      <main>
+        <SearchBox/>
+        <span className="flex place-content-center text-xl text-white">Couldn't Load Results</span>
+      </main>
+    )
   }
   if (loading) {
     return (
-      <main className="min-h-screen bg-black">
+      <main className="min-h-screen bg-cyan-900">
         <SearchBox/>
         <div className="flex place-content-center">
       <span className="text-white">Searching coin..</span>
@@ -52,7 +57,7 @@ function Search() {
 
   if (urlQuery && coins.length === 0) {
     return (
-      <main className="min-h-screen bg-black">
+      <main className="min-h-screen bg-cyan-900">
         <SearchBox/>
         <div className="flex place-content-center">
       <span className="text-white">No coins Found</span>
@@ -60,16 +65,22 @@ function Search() {
       </main>
     )
   }
+
+  if (!urlQuery) {
+    return (
+      <main className="min-h-screen bg-cyan-900">
+        <SearchBox />
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen bg-cyan-900">
       <SearchBox /> 
       <section className="px-10 md:px-45 pt-6">
-        {urlQuery && (
           <h2 className="text-2xl font-bold text-white mb-6">
             Results for "{urlQuery}"
           </h2>
-        )}
-
         <div>
 
         {coins.length > 0 && (
@@ -81,7 +92,7 @@ function Search() {
 
             <div
               onClick={() => navigate(`/coin/${coins[0].id}`)}
-              className="flex text-gray-500 items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-green-800 hover:text-white transition mb-8"
+              className="flex text-gray-500 items-center gap-4 bg-white p-4 rounded-lg cursor-pointer hover:bg-cyan-700 active:bg-cyan-800 hover:text-white transition mb-8"
             >
               <img
                 src={coins[0].large}
@@ -113,7 +124,7 @@ function Search() {
                     <div
                       key={coin.id}
                       onClick={() => navigate(`/coin/${coin.id}`)}
-                      className="flex items-center gap-4 bg-white text-gray-500 p-3 rounded-lg cursor-pointer hover:bg-green-800 hover:text-white transition"
+                      className="flex items-center gap-4 bg-white text-gray-500 p-3 rounded-lg cursor-pointer hover:bg-cyan-700 active:bg-cyan-800 hover:text-white transition"
                     >
                       <img
                         src={coin.large}

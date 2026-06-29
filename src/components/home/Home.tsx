@@ -19,7 +19,7 @@ const Home = () => {
       <section className="w-full min-h-screen md:w-[50vw] flex items-center justify-center px-8 py-12 bg-white">
         <div className="">
 
-          <h1 className="text-5xl md:text-6xl font-bold mt-4 leading-tight">
+          <h1 className="text-5xl md:text-6xl font-bold mt-4 leading-tight text-gray-700">
             Track Crypto
             <span className="block text-green-500">
               In Real Time
@@ -42,7 +42,7 @@ const Home = () => {
             ) : (
               <button
                 onClick={() => navigate("/prices")}
-                className="bg-green-400 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-500 transition cursor-pointer"
+                className="bg-green-400 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-500 active:bg-green-600 transition cursor-pointer"
               >
                 View Prices
               </button>

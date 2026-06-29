@@ -32,58 +32,57 @@ const Navbar = () => {
             className="flex cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={Logo} width={30} height={30} alt="logo" />
+            <img src={Logo} width={30} height={30} alt="logo"/>
 
-            <span className="ml-[-8px] text-xl md:text-2xl font-bold text-black">
+            <span className="ml-[-8px] text-xl md:text-2xl font-bold text-cyan-900">
               RYPTOFY
             </span>
           </div>
 
           {/* Right Section */}
           <div className="flex place-content-center gap-4">
-            <span className={`py-1 px-2 cursor-pointer ${location.pathname === "/prices" ? "bg-green-200 rounded-full" : ""}`} onClick={() => navigate("/prices")}><Bitcoin className={`py-1 ${location.pathname === "/prices" ? "fill-black" : ""}`} size={35} color="black"/></span>
+            <span className={`py-3 px-3 cursor-pointer rounded-full ${location.pathname === "/prices" ? "bg-green-200" : ""}`} onClick={() => navigate("/prices")}><Bitcoin className={`py-1 ${location.pathname === "/prices" ? "fill-black" : ""}`} size={35} color="gray"/></span>
             {/* Search */}
             <span
-              className={`text-black flex items-center gap-1 cursor-pointer transition px-2 py-1 rounded-lg ${
+              className={`text-gray-600 flex items-center gap-1 cursor-pointer transition px-4 py-4 rounded-full ${
                 location.pathname === "/search"
-                  ? "bg-black text-white"
+                  ? "bg-cyan-200"
                   : ""
               }`}
               onClick={() => navigate("/search")}
             >
               <SearchIcon
-                size={20}
+                size={25} color="gray"
                 className={
                   location.pathname === "/search"
-                    ? "fill-white"
+                    ? "fill-black"
                     : ""
                 }
               />
-              Search
             </span>
 
             {/* User Dropdown */}
              <button
         className={`${
           showDropdown ? "bg-yellow-200" : ""
-        } flex flex-row items-center gap-1 cursor-pointer rounded-full p-2  transition`}
+        } flex flex-row items-center gap-1 cursor-pointer rounded-full py-2 px-2  transition`}
         onClick={() => setShowDropdown((prev) => !prev)}
       >
         <User
-          size={24}
-          color="black"
-          className={showDropdown ? "fill-white" : ""}
+          size={25}
+          color="gray"
+          className={showDropdown ? "fill-black" : ""}
         />
 
         <ChevronUp
           size={24}
-          color="black"
+          color="gray"
           className={`transition ${showDropdown ? "rotate-180" : "rotate-0"}`}
         />
       </button>
 
       {showDropdown && (
-        <div className="fixed top-11 right-2 mt-2 rounded-xl bg-white shadow-xl border border-gray-200 p-2 z-50">
+        <div className="fixed top-15 right-2 mt-2 rounded-xl bg-white shadow-xl border border-gray-200 p-2 z-50">
           <button
             onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-red-500 rounded-lg hover:bg-red-50 transition cursor-pointer"

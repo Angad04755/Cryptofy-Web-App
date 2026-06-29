@@ -167,7 +167,7 @@ const PriceList = () => {
 
   if (loading || !exchangeInfo) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black">
+      <div className="flex min-h-screen items-center justify-center bg-cyan-900">
         <SyncLoader size={15} color="white" />
       </div>
     );
@@ -176,10 +176,10 @@ const PriceList = () => {
   const currencySymbol = currency_symbols.get(currency);
 
   return (
-    <section className="w-full min-h-screen bg-black text-white">
+    <section className="w-full min-h-screen bg-cyan-900 text-white">
 
       {/* Currency selector — sticky below navbar */}
-      <div className="sticky top-14 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-lg">
+      <div className="sticky top-19 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-lg">
         <SelectableButton
           options={CURRENCY_OPTIONS}
           selected={currency}
@@ -189,7 +189,7 @@ const PriceList = () => {
 
       {/* WebSocket status */}
       <div
-        className={`sticky top-[calc(3.5rem+48px)] z-10 px-4 py-1.5 text-center text-xs backdrop-blur-lg bg-black/20 ${
+        className={`sticky top-32 z-10 px-4 py-1.5 text-center text-xs backdrop-blur-lg bg-black/20 ${
           wsFailed ? "text-red-300" : "text-green-300"
         }`}
       >
@@ -197,7 +197,7 @@ const PriceList = () => {
       </div>
 
       {/* Table header */}
-      <div className="sticky top-[calc(3.5rem+48px+28px)] z-10 border-b border-gray-700 bg-gray-900/80 backdrop-blur-lg">
+      <div className="sticky top-39 z-10 border-b border-gray-700 bg-gray-900/80 backdrop-blur-lg">
         <div className="mx-auto max-w-5xl px-4">
           <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-400 sm:grid-cols-[2fr_1fr_1fr]">
             <span>Coin</span>

@@ -100,7 +100,11 @@ const PriceDetails = () => {
     );
   }
  if (!coin) {
-  return;
+  return (
+    <main className="nib-h-screen bg-cyan-900 flex justify-center items-center">
+        <span className="text-xl text-gray-400">Cannot get coin details currently</span>
+    </main>
+  )
  }
 
   const currentPrice =

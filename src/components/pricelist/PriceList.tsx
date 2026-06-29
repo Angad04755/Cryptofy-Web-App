@@ -175,6 +175,14 @@ const PriceList = () => {
 
   const currencySymbol = currency_symbols.get(currency);
 
+  if (!coins) {
+    return (
+      <main className="nib-h-screen bg-cyan-900 flex justify-center items-center">
+        <span className="text-xl text-gray-400">Cannot get coins currently</span>
+    </main>
+    )
+  }
+
   return (
     <section className="w-full min-h-screen bg-cyan-900 text-white">
 
@@ -209,9 +217,6 @@ const PriceList = () => {
 
       {/* Coin rows */}
       <div className="mx-auto max-w-5xl px-2 py-2 sm:px-4">
-        {visibleCoins.length === 0 ? (
-          <p className="py-16 text-center text-gray-500">No coins found.</p>
-        ) : (
           <table className="w-full border-collapse text-sm text-gray-300 sm:text-base">
             <tbody>
               {visibleCoins.map((coin) => {
@@ -276,7 +281,6 @@ const PriceList = () => {
               })}
             </tbody>
           </table>
-        )}
       </div>
 
       {/* Pagination */}

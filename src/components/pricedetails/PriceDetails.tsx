@@ -281,7 +281,7 @@ const ExternalLink = ({
     href={href}
     target="_blank"
     rel="noreferrer"
-    className="text-blue-500 hover:underline"
+    className="text-white-500 hover:underline"
   >
     {label}
   </a>

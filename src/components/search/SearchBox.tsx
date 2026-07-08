@@ -56,7 +56,7 @@ function SearchBox() {
       <span className="pt-2 pr-2">{query && (<span className="cursor-pointer" onClick={() => setQuery("")}><X color="white"/></span>)}</span>
     </form>
     <div className="pt-2">
-      {suggestions.length > 0 && (
+      {suggestions && (
         <div className="bg-cyan-900 shadow-lg rounded-lg text-white space-y-5">
           {suggestions.map((suggestion) => <span key={suggestion.id} className="flex flex-row gap-5 hover:bg-cyan-700 active:bg-cyan-800 cursor-pointer transition py-2 px-3 rounded-lg" onClick={(e) => handleSuggestions(suggestion.name, e)}><img src={suggestion.large} width={25} height={25}/>{" "}{suggestion.name}</span>)}
         </div>

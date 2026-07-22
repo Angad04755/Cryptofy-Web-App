@@ -2,27 +2,10 @@ import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
-import SelectableButton from "../ui/SelectableButton";
 import Footer from "../layout/Footer";
 import { GetAllPrices } from "../../services/GetAllPrices";
 
-const CURRENCY_OPTIONS = [
-  { label: "USD", value: "usd" },
-  { label: "EUR", value: "eur" },
-  { label: "GBP", value: "gbp" },
-  { label: "JPY", value: "jpy" },
-  { label: "INR", value: "inr" },
-  { label: "BTC", value: "btc" },
-];
 
-const currency_symbols = new Map<string, string>([
-  ["usd", "$"],
-  ["eur", "€"],
-  ["gbp", "£"],
-  ["jpy", "¥"],
-  ["inr", "₹"],
-  ["btc", "₿"],
-]);
 
 const PAGE_SIZE = 20;
 
@@ -30,11 +13,10 @@ const PriceList = () => {
   const navigate = useNavigate();
 
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [currency, setCurrency] = useState("usd");
   const [prices, setPrices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [wsFailed, setWsfailed] = useState(false);
-
+  const currency = "usd";
   // REST API - Get initial coin data
   useEffect(() => {
     const getPrices = async () => {
@@ -50,7 +32,7 @@ const PriceList = () => {
     };
 
     getPrices();
-  }, [currency]);
+  }, []);
 
   // Binance WebSocket - Live price updates
   useEffect(() => {
@@ -104,14 +86,22 @@ const PriceList = () => {
   )
 );
 
-    socket.onerror = () => {
-      setWsfailed(true);
-    };
+   }
+   socket.onerror = () => {
+    setWsfailed(true);
+   }
+   socket.onopen = () => {
+    setWsfailed(false)
+   }
 
-    return () => {
-      socket.close();
-    };
-  }}, []);
+   return () => {
+    socket.onclose;
+   }
+
+
+}, []);
+
+  
 
   useEffect(() => {
     setCurrentIndex(1);
@@ -159,36 +149,25 @@ const PriceList = () => {
     );
   }
 
-  const currencySymbol =
-    currency_symbols.get(currency);
-
   return (
     <section className="w-full min-h-screen bg-cyan-900 text-white">
 
-      <div className="sticky top-19 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-lg">
-        <SelectableButton
-          options={CURRENCY_OPTIONS}
-          selected={currency}
-          onChange={setCurrency}
-        />
-      </div>
-
       <div
-  className={`${wsFailed ? "text-red-200" : "text-green-200"} sticky top-32 z-10 bg-black/20 px-4 py-1.5 text-center text-xs backdrop-blur-lg`}
+  className={`${wsFailed ? "text-red-200" : "text-green-200"} sticky top-19 z-10 bg-black/20 px-4 py-1.5 text-center text-xs backdrop-blur-lg`}
 >
   {wsFailed ? (
     <span className="animate-pulse">Connecting...</span>
   ) : (
-    <span className="flex flex-row place-content-center gap-2">
+    <div className="flex justify-center  gap-2">
       <span className="h-2 w-2 animate-pulse rounded-full bg-green-200 my-auto" />
       <span className="text-md">Live</span>
-    </span>
+    </div>
   )}
 </div>
 
       <div className="mx-auto px-2 py-2 sm:px-4">
         <table className="w-full border-collapse text-sm text-gray-300 sm:text-base">
-          <thead className="sticky top-38.5 bg-white">
+          <thead className="sticky top-25.5 bg-white">
             <tr className="border-b border-gray-700 text-xs uppercase tracking-wider text-gray-500">
               <th className="py-3 pl-3 md:pl-5 text-left">
                 Coin
@@ -236,7 +215,7 @@ const PriceList = () => {
                 </td>
 
                 <td className="py-3 pr-2 text-right font-semibold tabular-nums sm:pr-4">
-                  {currencySymbol}
+                  $
                   {Number(
                     coin.current_price
                   ).toLocaleString(undefined, {

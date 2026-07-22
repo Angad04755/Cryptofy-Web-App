@@ -1,13 +1,10 @@
-"use client";
-
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import SelectableButton from "../ui/SelectableButton";
-import { GetAllPrices } from "../../services/GetAllPrices";
-import { type Price } from "../../types/PriceType";
 import Footer from "../layout/Footer";
+import { GetAllPrices } from "../../services/GetAllPrices";
 
 const CURRENCY_OPTIONS = [
   { label: "USD", value: "usd" },
@@ -29,135 +26,124 @@ const currency_symbols = new Map<string, string>([
 
 const PAGE_SIZE = 20;
 
-const BINANCE_EXCHANGE_INFO_URL = "https://api.binance.com/api/v3/exchangeInfo";
-const BINANCE_WS_BASE = "wss://stream.binance.com:9443/stream?streams=";
-
-type BinanceExchangeInfo = {
-  symbols: {
-    symbol: string;
-    status: string;
-  }[];
-};
-
-type LiveTicker = {
-  price: number;
-  changePercent: number;
-};
-
 const PriceList = () => {
   const navigate = useNavigate();
-  const wsRef = useRef<WebSocket | null>(null);
 
-  const [page, setPage] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [currency, setCurrency] = useState("usd");
-  const [coins, setCoins] = useState<Price[]>([]);
-  const [exchangeInfo, setExchangeInfo] = useState<BinanceExchangeInfo | null>(null);
+  const [prices, setPrices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [liveData, setLiveData] = useState<Map<string, LiveTicker>>(new Map());
-  const [wsFailed, setWsFailed] = useState(false);
+  const [wsFailed, setWsfailed] = useState(false);
 
+  // REST API - Get initial coin data
   useEffect(() => {
-    const fetchCoins = async () => {
+    const getPrices = async () => {
       try {
-        setLoading(true);
         const data = await GetAllPrices(currency);
-        setCoins(data);
+
+        setPrices(data);
+        setLoading(false);
       } catch (error) {
-        console.error("Failed to fetch coins", error);
-      } finally {
+        console.error("Error fetching prices:", error);
         setLoading(false);
       }
     };
-    fetchCoins();
+
+    getPrices();
   }, [currency]);
 
+  // Binance WebSocket - Live price updates
   useEffect(() => {
-    const fetchExchangeInfo = async () => {
-      try {
-        const res = await fetch(BINANCE_EXCHANGE_INFO_URL);
-        if (!res.ok) throw new Error("Failed to fetch exchange info");
-        const data = await res.json();
-        setExchangeInfo(data);
-      } catch (error) {
-        console.error("Failed to fetch exchange info", error);
-      }
+    const socket = new WebSocket(
+      "wss://stream.binance.com:9443/stream?streams=%21miniTicker@arr"
+    );
+
+    socket.onmessage = (event) => {
+  const data = JSON.parse(event.data).data;
+
+  setPrices((prices) =>
+  prices.map((coin) =>
+    data.find(
+      (item: any) =>
+        item.s === `${coin.symbol.toUpperCase()}USDT`
+    )
+      ? {
+          ...coin,
+          current_price: Number(
+            data.find(
+              (item: any) =>
+                item.s ===
+                `${coin.symbol.toUpperCase()}USDT`
+            ).c
+          ),
+          price_change_percentage_24h:
+            ((Number(
+              data.find(
+                (item: any) =>
+                  item.s ===
+                  `${coin.symbol.toUpperCase()}USDT`
+              ).c
+            ) -
+              Number(
+                data.find(
+                  (item: any) =>
+                    item.s ===
+                    `${coin.symbol.toUpperCase()}USDT`
+                ).o
+              )) /
+              Number(
+                data.find(
+                  (item: any) =>
+                    item.s ===
+                    `${coin.symbol.toUpperCase()}USDT`
+                ).o
+              )) *
+            100,
+        }
+      : coin
+  )
+);
+
+    socket.onerror = () => {
+      setWsfailed(true);
     };
-    fetchExchangeInfo();
-  }, []);
 
-  const binanceSymbols = useMemo(() => {
-    const set = new Set<string>();
-    if (!exchangeInfo?.symbols) return set;
-    exchangeInfo.symbols.forEach((item) => {
-      if (item.status !== "TRADING") return;
-      if (!item.symbol.endsWith("USDT")) return;
-      const baseSymbol = item.symbol.slice(0, -4).toLowerCase();
-      set.add(baseSymbol);
-    });
-    return set;
-  }, [exchangeInfo]);
-
-  const filteredCoins = useMemo(() => {
-    if (binanceSymbols.size === 0) return [];
-    return coins.filter((coin) => binanceSymbols.has(coin.symbol.toLowerCase()));
-  }, [coins, binanceSymbols]);
+    return () => {
+      socket.close();
+    };
+  }}, []);
 
   useEffect(() => {
-    setPage(1);
+    setCurrentIndex(1);
   }, [currency]);
-
-  useEffect(() => {
-    if (filteredCoins.length === 0) return;
-
-    const streams = filteredCoins
-      .slice(0, 80)
-      .map((coin) => `${coin.symbol.toLowerCase()}usdt@ticker`);
-
-    if (streams.length === 0) return;
-
-    wsRef.current?.close();
-    setWsFailed(false);
-
-    const ws = new WebSocket(`${BINANCE_WS_BASE}${streams.join("/")}`);
-    wsRef.current = ws;
-
-    ws.onmessage = (event) => {
-      const payload = JSON.parse(event.data);
-      const ticker = payload?.data;
-      if (!ticker?.s) return;
-      const baseSymbol = ticker.s.replace(/USDT$/, "").toLowerCase();
-      setLiveData((prev) => {
-        const updated = new Map(prev);
-        updated.set(baseSymbol, {
-          price: Number(ticker.c),
-          changePercent: Number(ticker.P),
-        });
-        return updated;
-      });
-    };
-
-    ws.onerror = () => setWsFailed(true);
-
-    return () => ws.close();
-  }, [filteredCoins]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
-  }, [page]);
+  }, [currentIndex]);
 
-  const totalPages = Math.ceil(filteredCoins.length / PAGE_SIZE);
-  const start = (page - 1) * PAGE_SIZE;
-  const visibleCoins = filteredCoins.slice(start, start + PAGE_SIZE);
-  const isLastPage = page === totalPages || totalPages === 0;
+  const totalPages = Math.ceil(
+    prices.length / PAGE_SIZE
+  );
+
+  const start = (currentIndex - 1) * PAGE_SIZE;
+
+  const visiblePrices = prices.slice(
+    start,
+    start + PAGE_SIZE
+  );
+
+  const isLastPage =
+    currentIndex === totalPages || totalPages === 0;
 
   const pages: (number | null)[] = [];
+
   for (let i = 1; i <= totalPages; i++) {
     if (
       i === 1 ||
       i === totalPages ||
-      i === page ||
-      i === page - 1 ||
-      i === page + 1
+      i === currentIndex ||
+      i === currentIndex - 1 ||
+      i === currentIndex + 1
     ) {
       pages.push(i);
     } else if (pages[pages.length - 1] !== null) {
@@ -165,7 +151,7 @@ const PriceList = () => {
     }
   }
 
-  if (loading || !exchangeInfo) {
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-cyan-900">
         <SyncLoader size={15} color="white" />
@@ -173,20 +159,12 @@ const PriceList = () => {
     );
   }
 
-  const currencySymbol = currency_symbols.get(currency);
-
-  if (!coins) {
-    return (
-      <main className="nib-h-screen bg-cyan-900 flex justify-center items-center">
-        <span className="text-xl text-gray-400">Cannot get coins currently</span>
-    </main>
-    )
-  }
+  const currencySymbol =
+    currency_symbols.get(currency);
 
   return (
     <section className="w-full min-h-screen bg-cyan-900 text-white">
 
-      {/* Currency selector — sticky below navbar */}
       <div className="sticky top-19 z-20 flex justify-center bg-black/10 p-2 backdrop-blur-lg">
         <SelectableButton
           options={CURRENCY_OPTIONS}
@@ -195,119 +173,126 @@ const PriceList = () => {
         />
       </div>
 
-      {/* WebSocket status */}
       <div
-        className={`sticky top-32 z-10 px-4 py-1.5 text-center text-xs backdrop-blur-lg bg-black/20 ${
-          wsFailed ? "text-red-300" : "text-green-300"
-        }`}
-      >
-        {wsFailed ? "⚠ Reconnecting…" : "● Live"}
+  className={`${wsFailed ? "text-red-200" : "text-green-200"} sticky top-32 z-10 bg-black/20 px-4 py-1.5 text-center text-xs backdrop-blur-lg`}
+>
+  {wsFailed ? (
+    <span className="animate-pulse">Connecting...</span>
+  ) : (
+    <span className="flex flex-row place-content-center gap-2">
+      <span className="h-2 w-2 animate-pulse rounded-full bg-green-200 my-auto" />
+      <span className="text-md">Live</span>
+    </span>
+  )}
+</div>
+
+      <div className="mx-auto px-2 py-2 sm:px-4">
+        <table className="w-full border-collapse text-sm text-gray-300 sm:text-base">
+          <thead className="sticky top-38.5 bg-white">
+            <tr className="border-b border-gray-700 text-xs uppercase tracking-wider text-gray-500">
+              <th className="py-3 pl-3 md:pl-5 text-left">
+                Coin
+              </th>
+
+              <th className="py-3 pr-3 md:pr-5 text-right">
+                Price
+              </th>
+
+              <th className="py-3 pr-3 md:pr-5 text-right">
+                24h %
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {visiblePrices.map((coin) => (
+              <tr
+                key={coin.id}
+                onClick={() =>
+                  navigate(`/coin/${coin.id}`)
+                }
+                className="cursor-pointer border-b border-gray-800 transition-colors hover:bg-white/5 active:bg-white/10"
+              >
+                <td className="py-3 pl-2 pr-2 sm:pl-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <img
+                      src={coin.image}
+                      alt={coin.name}
+                      width={28}
+                      height={28}
+                      className="h-7 w-7 flex-shrink-0 sm:h-8 sm:w-8"
+                    />
+
+                    <div className="min-w-0">
+                      <p className="truncate font-medium text-white text-sm sm:text-base">
+                        {coin.name}
+                      </p>
+
+                      <p className="text-xs uppercase text-gray-400">
+                        {coin.symbol}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td className="py-3 pr-2 text-right font-semibold tabular-nums sm:pr-4">
+                  {currencySymbol}
+                  {Number(
+                    coin.current_price
+                  ).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 8,
+                  })}
+                </td>
+
+                <td
+                  className={`py-3 pr-2 text-right font-medium tabular-nums sm:pr-4 ${
+                    coin.price_change_percentage_24h >= 0
+                      ? "text-green-200"
+                      : "text-red-200"
+                  }`}
+                >
+                  {coin.price_change_percentage_24h >= 0
+                    ? "▲"
+                    : "▼"}{" "}
+                  {Math.abs(
+                    coin.price_change_percentage_24h
+                  ).toFixed(2)}
+                  %
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* Table header */}
-      <div className="sticky top-39 z-10 border-b border-gray-700 bg-gray-900/80 backdrop-blur-lg">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-400 sm:grid-cols-[2fr_1fr_1fr]">
-            <span>Coin</span>
-            <span className="text-right">Price</span>
-            <span className="text-right">24h %</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Coin rows */}
-      <div className="mx-auto max-w-5xl px-2 py-2 sm:px-4">
-          <table className="w-full border-collapse text-sm text-gray-300 sm:text-base">
-            <tbody>
-              {visibleCoins.map((coin) => {
-                const symbol = coin.symbol.toLowerCase();
-                const liveTicker = liveData.get(symbol);
-                const displayPrice = liveTicker?.price ?? coin.current_price;
-                const displayChange =
-                  liveTicker?.changePercent ?? coin.price_change_percentage_24h;
-                const isPositive = displayChange >= 0;
-
-                return (
-                  <tr
-                    key={coin.id}
-                    onClick={() => navigate(`/coin/${coin.id}`)}
-                    className="cursor-pointer border-b border-gray-800 transition-colors hover:bg-white/5 active:bg-white/10"
-                  >
-                    {/* Coin name + symbol */}
-                    <td className="py-3 pl-2 pr-2 sm:pl-4">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <img
-                          src={coin.image}
-                          alt={coin.name}
-                          width={28}
-                          height={28}
-                          className="h-7 w-7 flex-shrink-0 sm:h-8 sm:w-8"
-                        />
-                        <div className="min-w-0">
-                          <p className="truncate font-medium text-white text-sm sm:text-base">
-                            {coin.name}
-                          </p>
-                          <p className="text-xs uppercase text-gray-400">
-                            {coin.symbol}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-
-                    {/* Price */}
-                    <td className="py-3 pr-2 text-right font-semibold tabular-nums sm:pr-4">
-                      <span className="text-sm sm:text-base">
-                        {currencySymbol}
-                        {displayPrice.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 8,
-                        })}
-                      </span>
-                    </td>
-
-                    {/* 24h % */}
-                    <td
-                      className={`py-3 pr-2 text-right font-medium tabular-nums sm:pr-4 ${
-                        isPositive ? "text-green-200" : "text-red-200"
-                      }`}
-                    >
-                      <span className="text-sm sm:text-base">
-                        {isPositive ? "▲" : "▼"}{" "}
-                        {Math.abs(displayChange).toFixed(2)}%
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-      </div>
-
-      {/* Pagination */}
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-2 px-4 py-6 sm:gap-3">
-        {/* Prev */}
+
         <button
-          disabled={page === 1}
-          onClick={() => setPage((p) => p - 1)}
-          aria-label="Previous page"
+          disabled={currentIndex === 1}
+          onClick={() =>
+            setCurrentIndex((p) => p - 1)
+          }
           className="flex items-center justify-center rounded-md border border-gray-600 bg-gray-800 p-1.5 text-gray-200 transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <ChevronLeft size={16} />
         </button>
 
-        {/* Page numbers */}
         <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5">
           {pages.map((p, i) =>
             p === null ? (
-              <span key={i} className="flex items-center px-1 text-gray-500 text-sm">
+              <span
+                key={i}
+                className="flex items-center px-1 text-sm text-gray-500"
+              >
                 …
               </span>
             ) : (
               <button
                 key={i}
-                onClick={() => setPage(p)}
+                onClick={() => setCurrentIndex(p)}
                 className={`min-w-[32px] rounded-md px-2 py-1 text-xs font-medium transition sm:min-w-[36px] sm:text-sm ${
-                  page === p
+                  currentIndex === p
                     ? "bg-white text-black"
                     : "bg-gray-800 text-gray-200 hover:bg-gray-700"
                 }`}
@@ -318,11 +303,11 @@ const PriceList = () => {
           )}
         </div>
 
-        {/* Next */}
         <button
           disabled={isLastPage}
-          onClick={() => setPage((p) => p + 1)}
-          aria-label="Next page"
+          onClick={() =>
+            setCurrentIndex((p) => p + 1)
+          }
           className="flex items-center justify-center rounded-md border border-gray-600 bg-gray-800 p-1.5 text-gray-200 transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
         >
           <ChevronRight size={16} />

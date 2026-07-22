@@ -36,6 +36,10 @@ function Search() {
     fetchCoins();
   }, [urlQuery]);
 
+  useEffect(() => {
+    window.scrollTo({top: 0, behavior: "instant"})
+  }, []);
+
   if (!coins) {
     return (
       <main>

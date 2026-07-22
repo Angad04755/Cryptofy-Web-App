@@ -13,12 +13,12 @@
 
 @keyframes Pulse {
     0% {
-        opacity: 0.90;
+        opacity: 0.10;
     }
     50% {
-        opacity: 1;
+        opacity: 1.2;
     }
     100% {
-        opacity: 0.90;
+        opacity: 0.10;
     }
 }

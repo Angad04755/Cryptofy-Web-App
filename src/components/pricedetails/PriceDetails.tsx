@@ -11,8 +11,6 @@ import { useParams } from "react-router-dom";
 const PriceDetails = () => {
   const [coin, setCoin] = useState<CoinById | null>(null);
   const [chartPrices, setChartPrices] = useState<number[][]>([]);
-  const [currentPrice, setCurrentPrice] = useState(0);
-  const [priceChange, setPriceChange] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
@@ -28,10 +26,7 @@ const PriceDetails = () => {
         const data = await getCoinbyId(id);
 
         setCoin(data);
-        setCurrentPrice(data.market_data.current_price.usd);
-        setPriceChange(
-          data.market_data.price_change_percentage_24h
-        );
+
       } catch (error) {
         console.error(error);
       } finally {
@@ -61,7 +56,7 @@ const PriceDetails = () => {
 
   // Binance WebSocket
   useEffect(() => {
-    if (!coin?.symbol) return;
+    if (!coin) return;
 
     const socket = new WebSocket(
       `wss://stream.binance.com:9443/ws/${coin.symbol.toLowerCase()}usdt@ticker`
@@ -70,8 +65,16 @@ const PriceDetails = () => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      setCurrentPrice(Number(data.c));
-      setPriceChange(Number(data.P));
+      setCoin({...coin, market_data: {
+        ...coin.market_data,
+        current_price: {
+          ...coin.market_data.current_price,
+          usd: Number(data.c),
+        },
+        price_change_percentage_24h: Number(data.P),
+      },
+    });
+
     };
 
     socket.onerror = (error) => {
@@ -108,6 +111,12 @@ const PriceDetails = () => {
     );
   }
 
+  const currentPrice = coin.market_data.current_price.usd;
+
+const priceChange =
+  coin.market_data.price_change_percentage_24h;
+
+
   const isPositive = priceChange >= 0;
 
   return (
@@ -115,7 +124,7 @@ const PriceDetails = () => {
       <div className="mx-auto max-w-5xl space-y-10">
 
         {/* Coin Header */}
-        <div className="flex flex-wrap items-center gap-5">
+        <div className="flex flex-wrap gap-5">
           <img
             src={coin.image.large}
             alt={coin.name}

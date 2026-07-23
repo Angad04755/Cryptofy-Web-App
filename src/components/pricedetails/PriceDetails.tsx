@@ -8,30 +8,30 @@ import PriceChart from "./PriceChart";
 import { SyncLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
 
-type LiveTicker = {
-  price: number;
-  changePercent: number;
-};
-
 const PriceDetails = () => {
   const [coin, setCoin] = useState<CoinById | null>(null);
   const [chartPrices, setChartPrices] = useState<number[][]>([]);
+  const [currentPrice, setCurrentPrice] = useState(0);
+  const [priceChange, setPriceChange] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [liveTicker, setLiveTicker] = useState<LiveTicker | null>(null);
 
   const { id } = useParams();
 
+  // Get coin details
   useEffect(() => {
-    if (!id) {
-        return;
-    }
+    if (!id) return;
+
     const fetchPrice = async () => {
       try {
         setLoading(true);
 
-        const res = await getCoinbyId(id);
+        const data = await getCoinbyId(id);
 
-        setCoin(res);
+        setCoin(data);
+        setCurrentPrice(data.market_data.current_price.usd);
+        setPriceChange(
+          data.market_data.price_change_percentage_24h
+        );
       } catch (error) {
         console.error(error);
       } finally {
@@ -42,16 +42,15 @@ const PriceDetails = () => {
     fetchPrice();
   }, [id]);
 
+  // Get chart data
   useEffect(() => {
-    if (!id) {
-        return;
-    }
+    if (!id) return;
+
     const fetchMarketChart = async () => {
       try {
-        const res = await getCoinMarketChart(id);
+        const data = await getCoinMarketChart(id);
 
-        // FIX: only store the prices array
-        setChartPrices(res.prices ?? []);
+        setChartPrices(data.prices ?? []);
       } catch (error) {
         console.error(error);
       }
@@ -60,29 +59,28 @@ const PriceDetails = () => {
     fetchMarketChart();
   }, [id]);
 
+  // Binance WebSocket
   useEffect(() => {
     if (!coin?.symbol) return;
 
-    const symbol = coin.symbol.toLowerCase();
-
-    const ws = new WebSocket(
-      `wss://stream.binance.com:9443/ws/${symbol}usdt@ticker`
+    const socket = new WebSocket(
+      `wss://stream.binance.com:9443/ws/${coin.symbol.toLowerCase()}usdt@ticker`
     );
 
-    ws.onmessage = (event) => {
+    socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      setLiveTicker({
-        price: Number(data.c),
-        changePercent: Number(data.P),
-      });
+      setCurrentPrice(Number(data.c));
+      setPriceChange(Number(data.P));
     };
 
-    ws.onerror = (error) => {
-      console.error(error);
+    socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
     };
 
-    return () => ws.close();
+    return () => {
+      socket.close();
+    };
   }, [coin]);
 
   useEffect(() => {
@@ -94,34 +92,30 @@ const PriceDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cyan-900 flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-cyan-900">
         <SyncLoader size={25} color="white" />
       </div>
     );
   }
- if (!coin) {
-  return (
-    <main className="nib-h-screen bg-cyan-900 flex justify-center items-center">
-        <span className="text-xl text-gray-400">Cannot get coin details currently</span>
-    </main>
-  )
- }
 
-  const currentPrice =
-    liveTicker?.price ??
-    coin.market_data.current_price.usd;
-
-  const priceChange =
-    liveTicker?.changePercent ??
-    coin.market_data.price_change_percentage_24h;
+  if (!coin) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-cyan-900">
+        <span className="text-xl text-gray-400">
+          Cannot get coin details currently
+        </span>
+      </main>
+    );
+  }
 
   const isPositive = priceChange >= 0;
 
   return (
-    <section className="min-h-screen bg-cyan-900 text-white px-4 md:px-6 py-10">
-      <div className="max-w-5xl mx-auto space-y-10">
+    <section className="min-h-screen bg-cyan-900 px-4 py-10 text-white md:px-6">
+      <div className="mx-auto max-w-5xl space-y-10">
+
         {/* Coin Header */}
-        <div className="flex items-center gap-5 flex-wrap">
+        <div className="flex flex-wrap items-center gap-5">
           <img
             src={coin.image.large}
             alt={coin.name}
@@ -133,50 +127,49 @@ const PriceDetails = () => {
             <h1 className="text-3xl font-bold">
               {coin.name}
 
-              <span className="ml-2 text-gray-400 uppercase text-sm">
+              <span className="ml-2 text-sm uppercase text-gray-400">
                 ({coin.symbol})
               </span>
             </h1>
 
-            <p className="text-gray-400 text-sm">
+            <p className="text-sm text-gray-400">
               Rank #{coin.market_cap_rank}
             </p>
           </div>
         </div>
 
-        {/* Price */}
-        <div className="flex items-end justify-between flex-wrap gap-6">
-          <div className="rounded-xl px-4 py-3 w-fit">
-            <p className="text-2xl md:text-4xl font-semibold text-white">
-              ${currentPrice.toLocaleString()}
-            </p>
+        {/* Live Price */}
+        <div>
+          <p className="text-2xl font-semibold text-white md:text-4xl">
+            ${currentPrice.toLocaleString()}
+          </p>
 
-            <p
-              className={`text-sm font-semibold ${
-                isPositive
-                  ? "text-green-200"
-                  : "text-red-200"
-              }`}
-            >
-              {priceChange.toFixed(2)}% (24h)
-            </p>
-          </div>
+          <p
+            className={`text-sm font-semibold ${
+              isPositive
+                ? "text-green-200"
+                : "text-red-200"
+            }`}
+          >
+            {priceChange.toFixed(2)}% (24h)
+          </p>
         </div>
 
         {/* Chart */}
         <div className="rounded-xl p-5">
-          <p className="text-gray-400 text-sm mb-3">
+          <p className="mb-3 text-sm text-gray-400">
             Last 7 Days
           </p>
 
           <PriceChart
             prices={chartPrices}
-            livePrice={liveTicker?.price}
+            livePrice={currentPrice}
           />
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] gap-6  text-gray-700 shadow-lg rounded-xl p-6">
+        <div className="grid grid-cols-2 gap-6 rounded-xl p-6 text-gray-700 shadow-lg md:grid-cols-3">
+
           <Stat
             label="Market Cap"
             value={`$${coin.market_data.market_cap.usd.toLocaleString()}`}
@@ -217,36 +210,37 @@ const PriceDetails = () => {
         </div>
 
         {/* Description */}
-          <div className="text-cyan-900 rounded-xl p-6 shadow-lg">
-            <h2 className="text-lg font-semibold text-white mb-2">
-              About {coin.name}
-            </h2>
+        <div className="rounded-xl p-6">
+          <h2 className="mb-2 text-lg font-semibold text-white">
+            About {coin.name}
+          </h2>
 
-            <p className="text-sm text-gray-300 leading-relaxed">
-              {coin.description.en
-                .replace(/<[^>]+>/g, "")
-                .slice(0, 500)}
-              ...
-            </p>
-          </div>
+          <p className="text-sm leading-relaxed text-gray-300">
+            {coin.description.en
+              .replace(/<[^>]+>/g, "")
+              .slice(0, 500)}
+            ...
+          </p>
+        </div>
 
         {/* Links */}
-        <div className="flex flex-row px-6 gap-6 text-sm">
-            <ExternalLink
-              href={coin.links.homepage[0]}
-              label="Website"
-            />
+        <div className="flex gap-6 px-6 text-sm">
+          <ExternalLink
+            href={coin.links.homepage[0]}
+            label="Website"
+          />
 
-                      <ExternalLink
-              href={coin.links.blockchain_site[0]}
-              label="Explorer"
-            />
+          <ExternalLink
+            href={coin.links.blockchain_site[0]}
+            label="Explorer"
+          />
 
-            <ExternalLink
-              href={coin.links.repos_url.github[0]}
-              label="GitHub"
-            />
+          <ExternalLink
+            href={coin.links.repos_url.github[0]}
+            label="GitHub"
+          />
         </div>
+
       </div>
     </section>
   );
@@ -260,11 +254,11 @@ const Stat = ({
   value: string;
 }) => (
   <div>
-    <p className="text-gray-400 text-sm">
+    <p className="text-sm text-gray-400">
       {label}
     </p>
 
-    <p className="text-white font-medium break-words">
+    <p className="break-words font-medium text-white">
       {value}
     </p>
   </div>
@@ -281,7 +275,7 @@ const ExternalLink = ({
     href={href}
     target="_blank"
     rel="noreferrer"
-    className="text-white-500 hover:underline"
+    className="text-white hover:underline"
   >
     {label}
   </a>

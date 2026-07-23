@@ -158,7 +158,7 @@ const PriceList = () => {
   {wsFailed ? (
     <span className="animate-pulse">Connecting...</span>
   ) : (
-    <div className="flex justify-center  gap-2">
+    <div className="flex place-content-center  gap-2">
       <span className="h-2 w-2 animate-pulse rounded-full bg-green-200 my-auto" />
       <span className="text-md">Live</span>
     </div>

@@ -25,6 +25,9 @@ function RegisterModal({ onClose }: RegisterModalProps) {
 
   const onSubmit = (data: RegisterFormData) => {
     console.log(data);
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("email", data.email);
+    localStorage.setItem("password", data.password);
     toast.success("Account created successfully");
     setActivetab("login");
   };
@@ -45,7 +48,9 @@ function RegisterModal({ onClose }: RegisterModalProps) {
           </h2>
 
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit((data) => {
+              onSubmit(data)
+            })}
             className="space-y-4"
           >
             <div>

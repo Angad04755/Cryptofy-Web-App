@@ -26,14 +26,22 @@ function LoginModal({ onclose }: LoginModalProps) {
     resolver: zodResolver(loginSchema),
   });
   const navigate = useNavigate();
+  const username = localStorage.getItem("username");
+  const password = localStorage.getItem("password");
   const [activetab, setActivetab] = useState<"login" | "register">("login");
   const dispatch = useDispatch<AppDispatch>();
-  const onSubmit = () => {
+  const onSubmit = (data: LoginFormData) => {
+        if (data.username === username && data.password === password) {
         toast.success("Logged in");
-        navigate("/prices")
+
+        navigate("/prices", { replace: true });
+
         localStorage.setItem("isAuthenticated", "Authenticated")
         console.log(localStorage.getItem("isAuthenticated"));
         dispatch(login(true))
+        } else {
+          toast.error("Account not found");
+        }
   };
 
   return (
@@ -48,7 +56,9 @@ function LoginModal({ onclose }: LoginModalProps) {
         
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => {
+            onSubmit(data)
+          })}
           className="space-y-4"
         >
           <div>

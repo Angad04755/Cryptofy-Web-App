@@ -34,7 +34,7 @@ function LoginModal({ onclose }: LoginModalProps) {
         if (data.username === username && data.password === password) {
         toast.success("Logged in");
 
-        navigate("/prices", { replace: true });
+        navigate("/prices");
 
         localStorage.setItem("isAuthenticated", "Authenticated")
         console.log(localStorage.getItem("isAuthenticated"));

@@ -1,17 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import LoginModal from "../../auth/LoginModal";
-import { useState } from "react";
 import video from "../../assets/134428-759734802.mp4";
-import { type RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
+
 
 const Home = () => {
   const navigate = useNavigate();
-  const [openModal, setOpenmodal] = useState(false);
-
-  const authenticated = useSelector(
-    (state: RootState) => state.auth.authState
-  );
+  
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
@@ -32,21 +25,12 @@ const Home = () => {
           </p>
 
           <div className="mt-8">
-            {!authenticated ? (
-              <button
-                onClick={() => setOpenmodal(true)}
-                className="bg-cyan-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-cyan-700 active:bg-cyan-800 transition cursor-pointer"
-              >
-                Login
-              </button>
-            ) : (
               <button
                 onClick={() => navigate("/prices")}
                 className="bg-green-400 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-500 active:bg-green-600 transition cursor-pointer"
               >
                 View Prices
               </button>
-            )}
           </div>
         </div>
       </section>
@@ -63,9 +47,7 @@ const Home = () => {
         </video>
       </section>
 
-      {openModal && (
-        <LoginModal onclose={() => setOpenmodal(false)} />
-      )}
+
     </main>
   );
 };

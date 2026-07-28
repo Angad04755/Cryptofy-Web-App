@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
-import Modal from "../components/ui/Modal";
+import Modal from "../ui/Modal";
 import { useState } from "react";
 import {
   registerSchema,
   type RegisterFormData,
-} from "../schemas/RegisterSchema";
+} from "../../schemas/RegisterSchema";
 import { toast } from "sonner";
 import LoginModal from "./LoginModal";
 

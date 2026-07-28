@@ -1,18 +1,17 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
-import Modal from "../components/ui/Modal";
+import Modal from "../ui/Modal";
 import {
   loginSchema,
   type LoginFormData,
-} from "../schemas/LoginSchema";
+} from "../../schemas/LoginSchema";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import RegisterModal from "./RegisterModal";
 import { useDispatch } from "react-redux";
-import { type AppDispatch } from "../redux/store";
-import { login } from "../redux/slices/AuthSlice";
+import { type AppDispatch } from "../../redux/store";
+import { login } from "../../redux/slices/AuthSlice";
 interface LoginModalProps {
     onclose: () => void,
 }
@@ -25,7 +24,6 @@ function LoginModal({ onclose }: LoginModalProps) {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-  const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const password = localStorage.getItem("password");
   const [activetab, setActivetab] = useState<"login" | "register">("login");
@@ -33,12 +31,10 @@ function LoginModal({ onclose }: LoginModalProps) {
   const onSubmit = (data: LoginFormData) => {
         if (data.username === username && data.password === password) {
         toast.success("Logged in");
-
-        navigate("/prices");
-
         localStorage.setItem("isAuthenticated", "Authenticated")
         console.log(localStorage.getItem("isAuthenticated"));
-        dispatch(login(true))
+        dispatch(login(true));
+        onclose();
         } else {
           toast.error("Account not found");
         }

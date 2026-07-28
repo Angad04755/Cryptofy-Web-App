@@ -116,7 +116,7 @@ function Search() {
               </div>
             </div>
 
-            <div>
+            <div className="pb-5">
             {coins.slice(1).length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold text-gray-300 mb-3">

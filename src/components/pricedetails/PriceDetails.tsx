@@ -114,6 +114,9 @@ const PriceDetails = () => {
 
   const handleBookmark = useCallback(
   (id: string) => {
+    if (!coin) {
+      return;
+    }
     if (liked) {
       const updatedCoins = BookmarkedCoins.filter(
         (item) => item.id !== id

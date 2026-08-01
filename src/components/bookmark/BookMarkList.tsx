@@ -1,10 +1,14 @@
 import type { BookMarkCoin } from "../../types/BookMarkCoin";
-import { useCallback, useState } from "react";
-
+import { useCallback, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 function BookMarkList() {
   const Bookmarks: BookMarkCoin[] = JSON.parse(
     localStorage.getItem("Bookmarked") || "[]");
-  console.log(Bookmarks)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      window.scrollTo({top: 0, behavior: "instant"});
+    }, []);
 
   const [bookmarkedCoins, setBookMarkedCoins] =
     useState<BookMarkCoin[]>(Bookmarks);
@@ -55,8 +59,8 @@ function BookMarkList() {
           {bookmarkedCoins.map((item) => (
             <div
               key={item.id}
-              className="flex w-full items-center justify-between rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:shadow-2xl"
-            >
+              className="flex w-full items-center justify-between rounded-2xl bg-white p-5 shadow-lg transition-all duration-300 hover:shadow-2xl cursor-pointer"
+            onClick={() => navigate(`/coin/${item.id}`)}>
               {/* Coin Information */}
               <div className="flex items-center gap-4">
                 <img

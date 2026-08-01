@@ -112,31 +112,6 @@ const PriceDetails = () => {
     });
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-cyan-900">
-        <SyncLoader size={25} color="white" />
-      </div>
-    );
-  }
-
-  if (!coin) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-cyan-900">
-        <span className="text-xl text-gray-400">
-          Cannot get coin details currently
-        </span>
-      </main>
-    );
-  }
-
-  const currentPrice = coin.market_data.current_price.usd;
-
-  const priceChange =
-    coin.market_data.price_change_percentage_24h;
-
-  const isPositive = priceChange >= 0;
-
   const handleBookmark = useCallback(
   (id: string) => {
     if (liked) {
@@ -174,6 +149,33 @@ const PriceDetails = () => {
   },
   [coin, liked]
 );
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-cyan-900">
+        <SyncLoader size={25} color="white" />
+      </div>
+    );
+  }
+
+  if (!coin) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-cyan-900">
+        <span className="text-xl text-gray-400">
+          Cannot get coin details currently
+        </span>
+      </main>
+    );
+  }
+
+  const currentPrice = coin.market_data.current_price.usd;
+
+  const priceChange =
+    coin.market_data.price_change_percentage_24h;
+
+  const isPositive = priceChange >= 0;
+
+  
 
   return (
     <section className="min-h-screen bg-cyan-900 px-4 py-10 text-white md:px-6">

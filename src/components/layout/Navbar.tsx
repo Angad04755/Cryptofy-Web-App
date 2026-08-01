@@ -96,7 +96,7 @@ const Navbar = () => {
             <button
               className={`flex h-11 w-11 items-center justify-center rounded-full cursor-pointer transition-all duration-200 ${
                 location.pathname === "/bookmarks"
-                  ? "bg-yellow-200"
+                  ? "bg-orange-200"
                   : "hover:bg-gray-100"
               }`}
               onClick={() => navigate("/bookmarks")}

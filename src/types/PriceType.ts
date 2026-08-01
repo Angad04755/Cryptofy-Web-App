@@ -7,5 +7,4 @@ export type Price = {
     price_change_percentage_24h: number;
     market_cap: number;
     total_volume: number;
-    isliked: boolean;
 }

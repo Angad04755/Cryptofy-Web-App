@@ -153,7 +153,7 @@ const PriceList = () => {
     <section className="w-full min-h-screen bg-cyan-900 text-white">
 
       <div
-  className={`${wsFailed ? "text-red-200" : "text-green-200"} sticky top-19 z-10 bg-black/20 px-4 py-1.5 text-center text-xs backdrop-blur-lg`}
+  className={`${wsFailed ? "text-red-200" : "text-green-200"} sticky top-15 z-10 bg-black/20 px-4 py-1.5 text-center text-xs backdrop-blur-lg`}
 >
   {wsFailed ? (
     <span className="animate-pulse">Connecting...</span>
@@ -167,7 +167,7 @@ const PriceList = () => {
 
       <div className="mx-auto px-2 py-2 sm:px-4">
         <table className="w-full border-collapse text-sm text-gray-300 sm:text-base">
-          <thead className="sticky top-25.5 bg-white">
+          <thead className="sticky top-22 bg-white">
             <tr className="border-b border-gray-700 text-xs uppercase tracking-wider text-gray-500">
               <th className="py-3 pl-3 md:pl-5 text-left">
                 Coin

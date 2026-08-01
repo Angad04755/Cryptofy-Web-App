@@ -1,6 +1,13 @@
 import Logo from "../../assets/Logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Bitcoin, ChevronUp, SearchIcon, User, LogOut } from "lucide-react";
+import {
+  Bitcoin,
+  ChevronUp,
+  SearchIcon,
+  User,
+  LogOut,
+  BookmarkIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/slices/AuthSlice";
@@ -37,15 +44,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div
-            className="flex cursor-pointer"
+            className="flex cursor-pointer items-center"
             onClick={() => navigate("/")}
           >
-            <img
-              src={Logo}
-              width={30}
-              height={30}
-              alt="logo"
-            />
+            <img src={Logo} width={30} height={30} alt="logo" />
 
             <span className="ml-[-8px] text-xl md:text-2xl font-bold text-cyan-900">
               RYPTOFY
@@ -53,76 +55,93 @@ const Navbar = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex place-content-center gap-4">
-            <span
-              className={`py-3 px-3 cursor-pointer rounded-full ${
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Prices */}
+            <button
+              className={`flex h-11 w-11 items-center justify-center rounded-full cursor-pointer transition-all duration-200 ${
                 location.pathname === "/prices"
                   ? "bg-green-200"
-                  : ""
+                  : "hover:bg-gray-100"
               }`}
               onClick={() => navigate("/prices")}
             >
               <Bitcoin
-                className={`py-1 ${
-                  location.pathname === "/prices"
-                    ? "fill-black"
-                    : ""
-                }`}
-                size={35}
+                size={25}
                 color="gray"
+                className={`${
+                  location.pathname === "/prices" ? "fill-black" : ""
+                }`}
               />
-            </span>
+            </button>
 
             {/* Search */}
-            <span
-              className={`text-gray-600 flex items-center gap-1 cursor-pointer transition px-4 py-4 rounded-full ${
+            <button
+              className={`flex h-11 w-11 items-center justify-center rounded-full cursor-pointer transition-all duration-200 ${
                 location.pathname === "/search"
                   ? "bg-cyan-200"
-                  : ""
+                  : "hover:bg-gray-100"
               }`}
               onClick={() => navigate("/search")}
             >
               <SearchIcon
-                size={25}
+                size={24}
                 color="gray"
-                className={
-                  location.pathname === "/search"
-                    ? "fill-black"
-                    : ""
-                }
+                className={`${
+                  location.pathname === "/search" ? "fill-black" : ""
+                }`}
               />
-            </span>
+            </button>
+
+            {/* Bookmarks */}
+            <button
+              className={`flex h-11 w-11 items-center justify-center rounded-full cursor-pointer transition-all duration-200 ${
+                location.pathname === "/bookmarks"
+                  ? "bg-yellow-200"
+                  : "hover:bg-gray-100"
+              }`}
+              onClick={() => navigate("/bookmarks")}
+            >
+              <BookmarkIcon
+                size={24}
+                color="gray"
+                className={`${
+                  location.pathname === "/bookmarks" ? "fill-black" : ""
+                }`}
+              />
+            </button>
 
             {/* User Dropdown */}
             {!authenticated ? (
               <button
                 onClick={() => setOpenmodal(true)}
-                className="bg-cyan-600 text-white px-4 rounded-xl font-medium hover:bg-cyan-700 active:bg-cyan-800 transition cursor-pointer"
+                className="ml-1 bg-cyan-600 text-white px-4 py-2.5 rounded-xl font-medium hover:bg-cyan-700 active:bg-cyan-800 transition cursor-pointer"
               >
                 Login
               </button>
             ) : (
-              <div className="relative">
+              <div className="relative ml-1">
                 <button
-                  className={`${
-                    showDropdown ? "bg-yellow-200" : ""
-                  } flex flex-row gap-1 cursor-pointer rounded-full py-3 px-3 transition mt-[5px]`}
+                  className={`flex items-center gap-1 cursor-pointer rounded-full h-11 px-3 transition-all duration-200 ${
+                    showDropdown
+                      ? "bg-yellow-200"
+                      : "hover:bg-gray-100"
+                  }`}
                   onClick={() =>
                     setShowDropdown((prev) => !prev)
                   }
                 >
                   <User
-                    size={25}
+                    size={24}
                     color="gray"
-                    className={
+                    className={`${
                       showDropdown ? "fill-black" : ""
-                    }
+                    }`}
                   />
 
                   <ChevronUp
-                    size={24}
+                    size={20}
                     color="gray"
-                    className={`transition ${
+                    className={`transition-transform duration-200 ${
                       showDropdown
                         ? "rotate-180"
                         : "rotate-0"
@@ -131,23 +150,24 @@ const Navbar = () => {
                 </button>
 
                 {showDropdown && (
-  <div className="absolute top-full right-0 w-48 rounded-xl bg-gray-700 border border-gray-100 shadow-lg shadow-gray-200/50 p-2 z-50">
-    <button
-      onClick={handleLogout}
-      className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-100 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-200 cursor-pointer"
-    >
-      <LogOut size={18} />
-      <span>Logout</span>
-    </button>
-  </div>
-)}
+                  <div className="absolute top-full right-0 mt-2 w-48 rounded-xl bg-gray-700 border border-gray-100 shadow-lg shadow-gray-200/50 p-2 z-50">
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-100 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-200 cursor-pointer"
+                    >
+                      <LogOut size={18} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
         </div>
       </div>
+
       {openModal && (
-        <LoginModal onclose={() => setOpenmodal(false)}/>
+        <LoginModal onclose={() => setOpenmodal(false)} />
       )}
     </section>
   );

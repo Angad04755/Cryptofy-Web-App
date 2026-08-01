@@ -48,7 +48,7 @@ function SearchBox() {
   
     
   return (
-    <section className="sticky top-18.5 bg-cyan-900">
+    <section className="sticky top-15 bg-cyan-900">
     <button onClick={() => navigate(-1)} className="cursor-pointer pt-5 pl-5"><ArrowLeft size={28} color="white"/></button>
     <article className="px-10 md:px-45 pt-5">
     <form className="flex flex-row place-content-center w-full border-2 border-cyan-200 transition rounded-full shadow-lg" onSubmit={(e) => handleSuggestions(query, e)}>  

@@ -4,6 +4,7 @@ const HomePage = lazy(() => import("../pages/HomePage"));
 const PriceList = lazy(() => import("../components/pricelist/PriceList"))
 const PriceDetails = lazy(() => import("../components/pricedetails/PriceDetails"))
 const Search = lazy(() => import("../components/search/Search"));
+const BookMarkList = lazy(() => import("../components/bookmark/BookMarkList"));
 function AppRoutes() {
     return (
         <Suspense>
@@ -12,6 +13,7 @@ function AppRoutes() {
         <Route path="/prices" element={<PriceList/>}/>
         <Route path="/coin/:id" element={<PriceDetails/>}/>
         <Route path="/search" element={<Search/>}/>
+        <Route path="/bookmarks" element={<BookMarkList/>}/>
         </Routes>
         </Suspense>
     )

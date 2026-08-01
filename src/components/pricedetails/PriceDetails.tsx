@@ -1,19 +1,38 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type CoinById } from "../../types/CoinByIdType";
+import type { CoinById } from "../../types/CoinByIdType";
 import { getCoinbyId } from "../../services/GetPriceById";
 import { getCoinMarketChart } from "../../services/GetMarketChart";
 import PriceChart from "./PriceChart";
 import { SyncLoader } from "react-spinners";
 import { useParams } from "react-router-dom";
+import type { BookMarkCoin } from "../../types/BookMarkCoin";
+import { BookmarkIcon } from "lucide-react";
 
 const PriceDetails = () => {
   const [coin, setCoin] = useState<CoinById | null>(null);
   const [chartPrices, setChartPrices] = useState<number[][]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [liked, setLiked] = useState(false);
   const { id } = useParams();
+
+  const BookmarkedCoins: BookMarkCoin[] = JSON.parse(
+    localStorage.getItem("Bookmarked") || "[]");
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    const DesiredCoin = BookmarkedCoins.find(
+      (item) => item.id === id
+    );
+
+    if (DesiredCoin) {
+      setLiked(true);
+    }
+  }, []);
 
   // Get coin details
   useEffect(() => {
@@ -26,7 +45,6 @@ const PriceDetails = () => {
         const data = await getCoinbyId(id);
 
         setCoin(data);
-
       } catch (error) {
         console.error(error);
       } finally {
@@ -65,16 +83,17 @@ const PriceDetails = () => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
-      setCoin({...coin, market_data: {
-        ...coin.market_data,
-        current_price: {
-          ...coin.market_data.current_price,
-          usd: Number(data.c),
+      setCoin({
+        ...coin,
+        market_data: {
+          ...coin.market_data,
+          current_price: {
+            ...coin.market_data.current_price,
+            usd: Number(data.c),
+          },
+          price_change_percentage_24h: Number(data.P),
         },
-        price_change_percentage_24h: Number(data.P),
-      },
-    });
-
+      });
     };
 
     socket.onerror = (error) => {
@@ -113,16 +132,50 @@ const PriceDetails = () => {
 
   const currentPrice = coin.market_data.current_price.usd;
 
-const priceChange =
-  coin.market_data.price_change_percentage_24h;
-
+  const priceChange =
+    coin.market_data.price_change_percentage_24h;
 
   const isPositive = priceChange >= 0;
+
+  const handleBookmark = (id: string) => {
+    if (liked) {
+      const updatedCoins = BookmarkedCoins.filter(
+        (item) => item.id !== id
+      );
+
+      setLiked(false);
+
+      localStorage.setItem(
+        "Bookmarked",
+        JSON.stringify(updatedCoins)
+      );
+    } else {
+
+      const updatedCoins = [
+        ...BookmarkedCoins,
+        {
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol,
+        image: coin.image.large,
+        price: coin.market_data.current_price.usd,
+        price_change:
+          coin.market_data.price_change_percentage_24h,
+      },
+      ];
+
+      setLiked(true);
+
+      localStorage.setItem(
+        "Bookmarked",
+        JSON.stringify(updatedCoins)
+      );
+    }
+  };
 
   return (
     <section className="min-h-screen bg-cyan-900 px-4 py-10 text-white md:px-6">
       <div className="mx-auto max-w-5xl space-y-10">
-
         {/* Coin Header */}
         <div className="flex flex-wrap gap-5">
           <img
@@ -164,6 +217,17 @@ const priceChange =
           </p>
         </div>
 
+        {/* Bookmark */}
+        <span
+          className="float-right cursor-pointer"
+          onClick={() => handleBookmark(coin.id)}
+        >
+          <BookmarkIcon
+            size={30}
+            className={`${liked ? "fill-white" : ""}`}
+          />
+        </span>
+
         {/* Chart */}
         <div className="rounded-xl p-5">
           <p className="mb-3 text-sm text-gray-400">
@@ -178,7 +242,6 @@ const priceChange =
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-6 rounded-xl p-6 text-gray-700 shadow-lg md:grid-cols-3">
-
           <Stat
             label="Market Cap"
             value={`$${coin.market_data.market_cap.usd.toLocaleString()}`}
@@ -249,7 +312,6 @@ const priceChange =
             label="GitHub"
           />
         </div>
-
       </div>
     </section>
   );
@@ -263,9 +325,7 @@ const Stat = ({
   value: string;
 }) => (
   <div>
-    <p className="text-sm text-gray-400">
-      {label}
-    </p>
+    <p className="text-sm text-gray-400">{label}</p>
 
     <p className="break-words font-medium text-white">
       {value}

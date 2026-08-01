@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { CoinById } from "../../types/CoinByIdType";
 import { getCoinbyId } from "../../services/GetPriceById";
 import { getCoinMarketChart } from "../../services/GetMarketChart";
@@ -137,7 +137,8 @@ const PriceDetails = () => {
 
   const isPositive = priceChange >= 0;
 
-  const handleBookmark = (id: string) => {
+  const handleBookmark = useCallback(
+  (id: string) => {
     if (liked) {
       const updatedCoins = BookmarkedCoins.filter(
         (item) => item.id !== id
@@ -150,18 +151,17 @@ const PriceDetails = () => {
         JSON.stringify(updatedCoins)
       );
     } else {
-
       const updatedCoins = [
         ...BookmarkedCoins,
         {
-        id: coin.id,
-        name: coin.name,
-        symbol: coin.symbol,
-        image: coin.image.large,
-        price: coin.market_data.current_price.usd,
-        price_change:
-          coin.market_data.price_change_percentage_24h,
-      },
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol,
+          image: coin.image.large,
+          price: coin.market_data.current_price.usd,
+          price_change:
+            coin.market_data.price_change_percentage_24h,
+        },
       ];
 
       setLiked(true);
@@ -171,7 +171,9 @@ const PriceDetails = () => {
         JSON.stringify(updatedCoins)
       );
     }
-  };
+  },
+  [coin, liked]
+);
 
   return (
     <section className="min-h-screen bg-cyan-900 px-4 py-10 text-white md:px-6">

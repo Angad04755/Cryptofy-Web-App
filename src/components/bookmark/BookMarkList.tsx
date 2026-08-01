@@ -1,5 +1,5 @@
 import type { BookMarkCoin } from "../../types/BookMarkCoin";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 function BookMarkList() {
   const Bookmarks: BookMarkCoin[] = JSON.parse(
@@ -9,7 +9,7 @@ function BookMarkList() {
   const [bookmarkedCoins, setBookMarkedCoins] =
     useState<BookMarkCoin[]>(Bookmarks);
 
-  const handleRemoval = (id: string) => {
+  const handleRemoval = useCallback((id: string) => {
     const updatedCoins = bookmarkedCoins.filter(
       (item) => item.id !== id
     );
@@ -20,7 +20,7 @@ function BookMarkList() {
     );
 
     setBookMarkedCoins(updatedCoins);
-  };
+  }, [bookmarkedCoins])
 
   if (bookmarkedCoins.length === 0) {
     return (

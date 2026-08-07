@@ -43,7 +43,7 @@ export default function PriceChart({ prices, livePrice }: PriceChartProps) {
 
   const data = {
     labels: chartPrices.map((item) =>
-      new Date(item.timeStamp).toLocaleDateString()
+      new Date(item.timeStamp).toDateString()
     ),
     datasets: [
       {
